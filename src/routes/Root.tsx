@@ -15,6 +15,7 @@ export function Root() {
           <Link to="/toolkit-query">toolkit query</Link>
         </ul>
       </nav>
+      <div className="border bg-dark-500" />
       <Outlet />
     </Layout>
   );
