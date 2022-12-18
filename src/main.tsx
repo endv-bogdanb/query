@@ -54,7 +54,14 @@ function start() {
 
 import("./backend/browser")
   .then(({ worker }) => {
-    worker.start();
+    worker.start({
+      serviceWorker: {
+        url:
+          process.env.NODE_ENV === "production"
+            ? "/query/mockServiceWorker.js"
+            : undefined,
+      },
+    });
     return Promise.resolve();
   })
   .then(() => start());
