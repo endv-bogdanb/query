@@ -4,7 +4,9 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
+    "predev": "git rev-parse --short HEAD > public/version.txt",
     "dev": "vite",
+    "prebuild": "git rev-parse --short HEAD > public/version.txt",
     "build": "tsc && vite build",
     "preview": "vite preview",
     "test": "vitest"
