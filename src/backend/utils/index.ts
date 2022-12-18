@@ -6,7 +6,11 @@ export const { publicKey, privateKey } = await jose.generateKeyPair("ES256");
 export const PUBLIC_ROUTES = ["/api/login", "/api/isAuthenticated"];
 
 export function makeUrl(path: string = "") {
-  const url = new URL(`api/${path}`, window.location.origin);
+  const origin = window.location.origin;
+  const url = new URL(
+    `${origin.includes("github.io") ? "/query" : ""}api/${path}`,
+    origin
+  );
   return url.toString();
 }
 
