@@ -1,7 +1,7 @@
 import { RestRequest } from "msw";
-import * as jose from "jose";
+import { JWT } from "./Jwt";
 
-export const { publicKey, privateKey } = await jose.generateKeyPair("ES256");
+export * from "./Jwt";
 
 export const PUBLIC_ROUTES = ["/api/login", "/api/isAuthenticated"];
 
@@ -24,11 +24,14 @@ export async function isAuthenticated(
   try {
     const bearer = headers.get("Authorization") ?? "";
 
-    const [, jwt] = bearer.split(" ");
+    if (bearer.startsWith("Bearer ")) {
+      const [, jwt] = bearer.split(" ");
 
-    await jose.jwtVerify(jwt, publicKey);
+      await JWT.verify(jwt);
 
-    return true;
+      return true;
+    }
+    return false;
   } catch {
     return false;
   }

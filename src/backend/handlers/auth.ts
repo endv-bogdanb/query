@@ -1,8 +1,7 @@
 import { rest } from "msw";
 import { z } from "zod";
 import { db } from "../db";
-import { makeUrl, privateKey } from "../utils";
-import * as jose from "jose";
+import { JWT, makeUrl } from "../utils";
 
 const loginSchema = z.object({
   username: z.string(),
@@ -21,15 +20,7 @@ const handlers = [
       });
 
       if (user?.password === data.password) {
-        const jwt = await new jose.SignJWT({
-          "urn:example:claim": true,
-        })
-          .setProtectedHeader({ alg: "ES256" })
-          .setIssuedAt()
-          .setIssuer("urn:example:issuer")
-          .setAudience("urn:example:audience")
-          .setExpirationTime("1h")
-          .sign(privateKey);
+        const jwt = await JWT.jwt();
 
         return res(ctx.status(200), ctx.json({ user, token: jwt }));
       }
