@@ -1,7 +1,11 @@
 import { useMutation } from "react-query";
+import { useNavigate } from "react-router-dom";
 import { Layout, Login, TLoginUser } from "@components";
+import { TokenRegistry } from "@utils";
 
 export function QueryLogin() {
+  const navigate = useNavigate();
+
   const login = useMutation(["login"], async (user: TLoginUser) => {
     const response = await fetch("/api/login", {
       method: "POST",
@@ -11,7 +15,10 @@ export function QueryLogin() {
     if (response.status !== 200) {
       throw data;
     }
-    return data as { id: string; username: string; password: string };
+    return data as {
+      user: { id: string; username: string; password: string };
+      token: string;
+    };
   });
 
   return (
@@ -20,8 +27,9 @@ export function QueryLogin() {
         title="Query login"
         onLogin={async (value) => {
           try {
-            const user = await login.mutateAsync(value);
-            console.log("value", value, user);
+            const { token } = await login.mutateAsync(value);
+            TokenRegistry.token = token;
+            navigate("/query/users");
           } catch (e) {
             console.log("err", e);
           }
