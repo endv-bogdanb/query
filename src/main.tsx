@@ -1,6 +1,6 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
-import { createBrowserRouter, RouterProvider } from "react-router-dom";
+import { createHashRouter, RouterProvider } from "react-router-dom";
 
 import "virtual:windi.css";
 
@@ -10,7 +10,7 @@ import { QueryLogin, QueryRoot, QueryUsers } from "@routes/query";
 import { SwrLogin, SwrRoot, SwrUsers } from "@routes/swr";
 import { ToolkitLogin, ToolkitRoot, ToolkitUsers } from "@routes/toolkit";
 
-const router = createBrowserRouter([
+const router = createHashRouter([
   {
     path: "/",
     element: <Root />,
