@@ -7,8 +7,8 @@ import "virtual:windi.css";
 import { ErrorPage } from "@components";
 import { Root } from "@routes/Root";
 import { QueryLogin, QueryRoot, QueryUsers } from "@routes/query";
-import { SwrLogin, SwrRoot } from "@routes/swr";
-import { ToolkitLogin, ToolkitRoot } from "@routes/toolkit";
+import { SwrLogin, SwrRoot, SwrUsers } from "@routes/swr";
+import { ToolkitLogin, ToolkitRoot, ToolkitUsers } from "@routes/toolkit";
 
 const router = createBrowserRouter([
   {
@@ -27,12 +27,18 @@ const router = createBrowserRouter([
       {
         path: "/swr",
         element: <SwrRoot />,
-        children: [{ path: "/swr/", element: <SwrLogin /> }],
+        children: [
+          { path: "/swr/", element: <SwrLogin /> },
+          { path: "/swr/users", element: <SwrUsers /> },
+        ],
       },
       {
         path: "/toolkit-query",
         element: <ToolkitRoot />,
-        children: [{ path: "/toolkit-query/", element: <ToolkitLogin /> }],
+        children: [
+          { path: "/toolkit-query/", element: <ToolkitLogin /> },
+          { path: "/toolkit-query/users", element: <ToolkitUsers /> },
+        ],
       },
     ],
   },
