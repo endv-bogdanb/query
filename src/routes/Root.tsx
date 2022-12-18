@@ -8,7 +8,12 @@ export function Root() {
   useEffect(() => {
     const ab = new AbortController();
 
-    fetch("/version.txt", { signal: ab.signal })
+    fetch(
+      process.env.NODE_ENV === "production"
+        ? "/query/version.txt"
+        : "/version.txt",
+      { signal: ab.signal }
+    )
       .then((response) => response.text())
       .then((txt) => setVersion(txt));
 
