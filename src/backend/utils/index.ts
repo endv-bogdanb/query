@@ -8,7 +8,7 @@ export const PUBLIC_ROUTES = ["/api/login", "/api/isAuthenticated"];
 export function makeUrl(path: string = "") {
   const origin = window.location.origin;
   const url = new URL(
-    `${origin.includes("github.io") ? "/query" : ""}api/${path}`,
+    `${origin.includes("github.io") ? "/query/" : ""}api/${path}`,
     origin
   );
   return url.toString();
