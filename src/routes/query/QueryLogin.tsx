@@ -1,24 +1,23 @@
 import { useMutation } from "react-query";
 import { useNavigate } from "react-router-dom";
-import { Layout, Login, TLoginUser } from "@components";
+import { Layout, Login } from "@components";
 import { TokenRegistry } from "@utils";
+import { loginResSchema, TLoginReq } from "@models";
 
 export function QueryLogin() {
   const navigate = useNavigate();
 
-  const login = useMutation(["login"], async (user: TLoginUser) => {
+  const login = useMutation(["login"], async (user: TLoginReq) => {
     const response = await fetch("/api/login", {
       method: "POST",
       body: JSON.stringify(user),
     });
+
     const data = await response.json();
-    if (response.status !== 200) {
-      throw data;
-    }
-    return data as {
-      user: { id: string; username: string; password: string };
-      token: string;
-    };
+
+    if (response.status !== 200) throw data;
+
+    return loginResSchema.parse(data);
   });
 
   return (

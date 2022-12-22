@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { Link, Outlet } from "react-router-dom";
-import { Layout } from "../components/Layout";
+import { Layout } from "@components/Layout";
 
 export function Root() {
   const [version, setVersion] = useState<string | null>(null);

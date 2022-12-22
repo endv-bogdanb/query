@@ -1,27 +1,27 @@
+import { TUsers } from "@models";
+
 export interface IUserTable {
-  users: {
-    id: string;
-    name: string;
-    username: string;
-  }[];
+  users: TUsers;
 }
 
 export function UsersTable({ users }: IUserTable) {
   return (
-    <table>
+    <table className="w-1/2">
       <thead>
         <tr>
-          <th className="w-30">ID</th>
-          <th className="w-30">Username</th>
-          <th className="w-30">Name</th>
+          <th>ID</th>
+          <th>Username</th>
+          <th>First name</th>
+          <th>Last name</th>
         </tr>
       </thead>
       <tbody>
         {users.map((user) => (
           <tr key={user.id}>
-            <td className="text-right">{user.id}</td>
-            <td className="text-right">{user.username}</td>
-            <td className="text-right">{user.name}</td>
+            <td className="text-center">{user.id}</td>
+            <td className="text-center">{user.username}</td>
+            <td className="text-center">{user.firstName}</td>
+            <td className="text-center">{user.lastName}</td>
           </tr>
         ))}
       </tbody>

@@ -1,7 +1,6 @@
-import { TLoginUser } from "@components";
+import { TLoginReq, TLoginRes, TUsers } from "@models";
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 import { TokenRegistry } from "@utils";
-import { string } from "zod";
 
 export const api = createApi({
   reducerPath: "api",
@@ -13,7 +12,7 @@ export const api = createApi({
     },
   }),
   endpoints: (builder) => ({
-    login: builder.mutation<{ token: string }, TLoginUser>({
+    login: builder.mutation<TLoginRes, TLoginReq>({
       query: (user) => {
         return {
           url: "login",
@@ -22,10 +21,7 @@ export const api = createApi({
         };
       },
     }),
-    users: builder.query<
-      { id: string; name: string; username: string }[],
-      void
-    >({
+    users: builder.query<TUsers, void>({
       query: () => {
         return {
           url: "users",

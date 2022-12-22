@@ -12,6 +12,7 @@
     "test": "vitest"
   },
   "dependencies": {
+    "@faker-js/faker": "7.6.0",
     "@mswjs/data": "0.11.0",
     "@reduxjs/toolkit": "1.9.1",
     "clsx": "1.2.1",

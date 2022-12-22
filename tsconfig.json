@@ -19,6 +19,8 @@
     "paths": {
       "@components": ["src/components"],
       "@components/*": ["src/components/*"],
+      "@models": ["src/models"],
+      "@models/*": ["src/models/*"],
       "@utils": ["src/utils"],
       "@utils/*": ["src/utils/*"],
       "@routes": ["src/routes"],

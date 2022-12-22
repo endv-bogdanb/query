@@ -1,3 +1,1 @@
-export class TokenRegistry {
-  static token = "";
-}
+export * from './TokenRegistry'

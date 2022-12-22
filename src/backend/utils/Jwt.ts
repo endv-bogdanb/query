@@ -1,27 +1,46 @@
 import * as jose from "jose";
+import { z } from "zod";
 
-let publicKey: jose.GenerateKeyPairResult["publicKey"];
-let privateKey: jose.GenerateKeyPairResult["privateKey"];
+const storedKeysSchema = z
+  .string()
+  .transform((v) => JSON.parse(v))
+  .pipe(
+    z.object({
+      publickey: z
+        .string()
+        .transform(async (value) => await jose.importSPKI(value, "ES256")),
+      privatekey: z
+        .string()
+        .transform(async (value) => await jose.importPKCS8(value, "ES256")),
+    })
+  );
+
+export interface IRetrieve {
+  publicKey: jose.KeyLike;
+  privateKey: jose.KeyLike;
+}
+
+let publicKey: jose.KeyLike;
+let privateKey: jose.KeyLike;
 
 export class JWT {
-  static async setUp(): Promise<void> {
-    ({ publicKey, privateKey } = await jose.generateKeyPair("ES256"));
-  }
+  static async verify(jwt: string): Promise<boolean> {
+    try {
+      const { publicKey } = await JWT.retrieve();
 
-  static async verify(jwt: string): Promise<void> {
-    if (JWT.shouldSetup) {
-      await JWT.setUp();
+      await jose.jwtVerify(jwt, publicKey!);
+
+      return true;
+    } catch (e) {
+      return false;
     }
-    await jose.jwtVerify(jwt, publicKey!);
   }
 
   static async jwt(): Promise<string> {
-    if (JWT.shouldSetup) {
-      await JWT.setUp();
-    }
-
+    const { privateKey } = await JWT.retrieve();
     return await new jose.SignJWT({
       "urn:example:claim": true,
+      role: ["test"],
     })
       .setProtectedHeader({ alg: "ES256" })
       .setIssuedAt()
@@ -31,7 +50,32 @@ export class JWT {
       .sign(privateKey);
   }
 
-  static get shouldSetup() {
-    return !publicKey || !privateKey;
-  }
+  static store = async (): Promise<void> => {
+    if (!publicKey || !privateKey) {
+      return Promise.resolve();
+    }
+    const publickey = await jose.exportSPKI(publicKey);
+    const privatekey = await jose.exportPKCS8(privateKey);
+
+    const keys = JSON.stringify({ publickey, privatekey });
+
+    sessionStorage.setItem("JWT_KEYS", keys);
+  };
+
+  static retrieve = async (): Promise<IRetrieve> => {
+    if (!publicKey || !privateKey) {
+      const keys = sessionStorage.getItem("JWT_KEYS");
+      try {
+        ({ publickey: publicKey, privatekey: privateKey } =
+          await storedKeysSchema.parseAsync(keys));
+      } catch {
+        ({ publicKey, privateKey } = await jose.generateKeyPair("ES256", {
+          extractable: true,
+        }));
+        await JWT.store();
+      }
+    }
+
+    return { publicKey, privateKey };
+  };
 }

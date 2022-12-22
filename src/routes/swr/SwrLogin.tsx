@@ -1,4 +1,5 @@
 import { Layout, Login } from "@components";
+import { loginResSchema } from "@models";
 import { TokenRegistry } from "@utils";
 import { useNavigate } from "react-router-dom";
 import useSWRMutation from "swr/mutation";
@@ -9,19 +10,16 @@ export function SwrLogin() {
   const { trigger, error } = useSWRMutation(
     "/api/login",
     async (url, { arg: user }) => {
-      const response = await fetch("/api/login", {
+      const response = await fetch(url, {
         method: "POST",
         body: JSON.stringify(user),
       });
 
       const data = await response.json();
-      if (response.status !== 200) {
-        throw data;
-      }
-      return data as {
-        user: { id: string; username: string; password: string };
-        token: string;
-      };
+
+      if (response.status !== 200) throw data;
+
+      return loginResSchema.parse(data);
     }
   );
 
