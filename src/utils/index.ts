@@ -1,3 +1,3 @@
-export class TokenRegistry {
-  static token = "";
-}
+export * from "./TokenRegistry";
+export * from "./isProduction";
+export * from "./getPublicUrl"

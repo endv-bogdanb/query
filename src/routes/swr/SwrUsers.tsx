@@ -1,7 +1,7 @@
 import { UsersTable } from "@components/UsersTable";
 import useSWR from "swr";
 import { TokenRegistry } from "@utils";
-import { useQuery } from "react-query";
+import { usersSchema } from "@models";
 
 export function SwrUsers() {
   const { data, error } = useSWR(["users"], async () => {
@@ -11,17 +11,11 @@ export function SwrUsers() {
       },
     });
 
-    const users = (await response.json()) as {
-      id: string;
-      name: string;
-      username: string;
-    }[];
+    const data = await response.json();
 
-    if (response.status !== 200) {
-      throw users;
-    }
+    if (response.status !== 200) throw data;
 
-    return users;
+    return usersSchema.parse(data);
   });
 
   return (

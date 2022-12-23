@@ -1,17 +1,12 @@
 import { rest } from "msw";
-import { z } from "zod";
 import { db } from "../db";
 import { JWT, makeUrl } from "../utils";
-
-const loginSchema = z.object({
-  username: z.string(),
-  password: z.string(),
-});
+import { loginReqSchema } from "@models";
 
 const handlers = [
   rest.post(makeUrl("login"), async (req, res, ctx) => {
     const payload = await req.json();
-    const body = loginSchema.safeParse(payload);
+    const body = loginReqSchema.safeParse(payload);
 
     if (body.success) {
       const { data } = body;
@@ -20,7 +15,7 @@ const handlers = [
       });
 
       if (user?.password === data.password) {
-        const jwt = await JWT.jwt();
+        const jwt = await JWT.jwt({ id: user.id });
 
         return res(ctx.status(200), ctx.json({ user, token: jwt }));
       }
