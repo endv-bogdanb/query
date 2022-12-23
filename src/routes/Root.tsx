@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { Link, Outlet } from "react-router-dom";
 import { Layout } from "@components/Layout";
 import { getPublicUrl } from "@utils";
+import { Divider, Grid, List, ListItem } from "semantic-ui-react";
 
 export function Root() {
   const [version, setVersion] = useState<string | null>(null);
@@ -28,23 +29,25 @@ export function Root() {
 
   return (
     <Layout>
-      <nav className="flex px-8 justify-between">
-        <div className="flex items-center">
+      <Grid columns={2}>
+        <Grid.Column>
           {version !== null ? <>version: {version}</> : null}
-        </div>
-        <div className="flex gap-4 h-8 items-center">
-          <ul>
-            <Link to="/query">query</Link>
-          </ul>
-          <ul>
-            <Link to="/swr">swr</Link>
-          </ul>
-          <ul>
-            <Link to="/toolkit-query">toolkit query</Link>
-          </ul>
-        </div>
-      </nav>
-      <div className="border bg-dark-500" />
+        </Grid.Column>
+        <Grid.Column textAlign="right">
+          <List as="nav" horizontal>
+            <ListItem as={Link} to="/query">
+              query
+            </ListItem>
+            <ListItem as={Link} to="/swr">
+              swr
+            </ListItem>
+            <ListItem as={Link} to="/toolkit-query">
+              toolkit query
+            </ListItem>
+          </List>
+        </Grid.Column>
+      </Grid>
+      <Divider />
       <Outlet />
     </Layout>
   );

@@ -2,7 +2,7 @@ import React from "react";
 import ReactDOM from "react-dom/client";
 import { createHashRouter, RouterProvider } from "react-router-dom";
 
-import "virtual:windi.css";
+import 'semantic-ui-css/semantic.min.css'
 
 import { ErrorPage } from "@components";
 import { Root } from "@routes/Root";
