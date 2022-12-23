@@ -9,6 +9,7 @@ import { Root } from "@routes/Root";
 import { QueryLogin, QueryRoot, QueryUsers } from "@routes/query";
 import { SwrLogin, SwrRoot, SwrUsers } from "@routes/swr";
 import { ToolkitLogin, ToolkitRoot, ToolkitUsers } from "@routes/toolkit";
+import { getPublicUrl, isProduction } from "@utils";
 
 const router = createHashRouter([
   {
@@ -54,8 +55,10 @@ function start() {
 
 import("./backend/browser")
   .then(({ worker }) => {
-    if (process.env.NODE_ENV === "production") {
-      worker.start({ serviceWorker: { url: "/query/mockServiceWorker.js" } });
+    if (isProduction()) {
+      worker.start({
+        serviceWorker: { url: getPublicUrl("mockServiceWorker.js") },
+      });
     } else {
       worker.start();
     }

@@ -15,7 +15,7 @@ const handlers = [
       });
 
       if (user?.password === data.password) {
-        const jwt = await JWT.jwt();
+        const jwt = await JWT.jwt({ id: user.id });
 
         return res(ctx.status(200), ctx.json({ user, token: jwt }));
       }

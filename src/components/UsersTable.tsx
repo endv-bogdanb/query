@@ -20,8 +20,8 @@ export function UsersTable({ users }: IUserTable) {
           <tr key={user.id}>
             <td className="text-center">{user.id}</td>
             <td className="text-center">{user.username}</td>
-            <td className="text-center">{user.firstName}</td>
-            <td className="text-center">{user.lastName}</td>
+            <td className="text-center">{user.profile.firstName}</td>
+            <td className="text-center">{user.profile.lastName}</td>
           </tr>
         ))}
       </tbody>

@@ -1,4 +1,4 @@
-import { factory, primaryKey } from "@mswjs/data";
+import { factory, primaryKey, oneOf } from "@mswjs/data";
 import { faker } from "@faker-js/faker";
 
 function makeAutoIncrement() {
@@ -10,10 +10,15 @@ function makeAutoIncrement() {
 export const db = factory({
   user: {
     id: primaryKey(makeAutoIncrement()),
-    firstName: faker.name.firstName,
-    lastName: faker.name.lastName,
     username: String,
     password: String,
+    profile: oneOf("profile"),
+  },
+  profile: {
+    id: primaryKey(makeAutoIncrement()),
+    firstName: faker.name.firstName,
+    lastName: faker.name.lastName,
+    logo: faker.image.cats,
   },
 });
 
@@ -21,10 +26,12 @@ if (db.user.count() === 0) {
   db.user.create({
     username: "admin",
     password: "admin",
+    profile: db.profile.create(),
   });
 
   db.user.create({
     username: "test",
     password: "test",
+    profile: db.profile.create(),
   });
 }

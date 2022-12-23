@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { Link, Outlet } from "react-router-dom";
 import { Layout } from "@components/Layout";
+import { getPublicUrl } from "@utils";
 
 export function Root() {
   const [version, setVersion] = useState<string | null>(null);
@@ -8,13 +9,16 @@ export function Root() {
   useEffect(() => {
     const ab = new AbortController();
 
-    fetch(
-      process.env.NODE_ENV === "production"
-        ? "/query/version.txt"
-        : "/version.txt",
-      { signal: ab.signal }
-    )
-      .then((response) => response.text())
+    fetch(getPublicUrl("version.txt"), {
+      signal: ab.signal,
+    })
+      .then((response) => {
+        if (response.status !== 200) {
+          return Promise.resolve("");
+        } else {
+          return response.text();
+        }
+      })
       .then((txt) => setVersion(txt));
 
     return () => {

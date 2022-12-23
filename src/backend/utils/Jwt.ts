@@ -36,11 +36,11 @@ export class JWT {
     }
   }
 
-  static async jwt(): Promise<string> {
+  static async jwt({ id }: { id: number }): Promise<string> {
     const { privateKey } = await JWT.retrieve();
     return await new jose.SignJWT({
       "urn:example:claim": true,
-      role: ["test"],
+      userId: id,
     })
       .setProtectedHeader({ alg: "ES256" })
       .setIssuedAt()
@@ -49,6 +49,12 @@ export class JWT {
       .setExpirationTime("1h")
       .sign(privateKey);
   }
+
+  static decode = (jwt: string) => {
+    return jose.decodeJwt(jwt) as jose.JWTPayload & {
+      userId: number;
+    };
+  };
 
   static store = async (): Promise<void> => {
     if (!publicKey || !privateKey) {
