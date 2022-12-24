@@ -39,4 +39,8 @@ export class TokenRegistry {
       subscriber();
     }
   };
+
+  static reset = () => {
+    state.token = "";
+  };
 }

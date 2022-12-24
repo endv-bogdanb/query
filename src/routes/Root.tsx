@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { Link, Outlet } from "react-router-dom";
 import { Layout } from "@components/Layout";
-import { getPublicUrl } from "@utils";
+import { getPublicUrl, httpClient } from "@utils";
 import { Divider, Grid, List, ListItem } from "semantic-ui-react";
 
 export function Root() {
@@ -10,17 +10,15 @@ export function Root() {
   useEffect(() => {
     const ab = new AbortController();
 
-    fetch(getPublicUrl("version.txt"), {
+    httpClient(getPublicUrl("version.txt"), {
       signal: ab.signal,
     })
-      .then((response) => {
-        if (response.status !== 200) {
-          return Promise.resolve("");
-        } else {
-          return response.text();
+      .then((txt) => {
+        if (typeof txt === "string") {
+          setVersion(txt);
         }
       })
-      .then((txt) => setVersion(txt));
+      .catch(() => setVersion(""));
 
     return () => {
       ab.abort();
