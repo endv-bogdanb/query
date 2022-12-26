@@ -46,7 +46,7 @@ export class JWT {
       .setIssuedAt()
       .setIssuer("urn:example:issuer")
       .setAudience("urn:example:audience")
-      .setExpirationTime("1h")
+      .setExpirationTime("1m")
       .sign(privateKey);
   }
 

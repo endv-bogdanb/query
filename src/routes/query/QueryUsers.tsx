@@ -1,16 +1,11 @@
 import { UsersTable } from "@components/UsersTable";
 import { usersSchema } from "@models";
-import { httpClient, HttpError, TokenRegistry } from "@utils";
+import { authHttpClient, HttpError } from "@utils";
 import { useQuery } from "react-query";
 
 export function QueryUsers() {
   const { data, error } = useQuery(["users"], async ({ signal }) => {
-    const data = await httpClient("/api/users", {
-      signal,
-      headers: {
-        Authorization: `Bearer ${TokenRegistry.token}`,
-      },
-    });
+    const data = await authHttpClient("/api/users", { signal });
 
     return usersSchema.parse(data);
   });

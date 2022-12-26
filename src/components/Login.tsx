@@ -1,4 +1,4 @@
-import { Button, Form, Grid, Header, Input, Label } from "semantic-ui-react";
+import { Button, Form, Grid, Header, Input } from "semantic-ui-react";
 import { loginReqSchema, TLoginReq } from "@models";
 
 export interface ILogin {
@@ -10,15 +10,12 @@ export interface ILogin {
 export function Login({ title, onLogin, error }: ILogin) {
   return (
     <Form
-      className="flex flex-col w-md shadow-2xl p-6 bg-light-50 gap-4"
       onSubmit={(e) => {
         e.preventDefault();
-        const values = loginReqSchema.safeParse({
-          // @ts-expect-error
-          username: e.target.username.value,
-          // @ts-expect-error
-          password: e.target.password.value,
-        });
+        const data = new FormData(e.target as HTMLFormElement);
+        const values = loginReqSchema.safeParse(
+          Object.fromEntries(data.entries())
+        );
 
         if (values.success) {
           onLogin(values.data);
@@ -33,6 +30,7 @@ export function Login({ title, onLogin, error }: ILogin) {
             label="Username"
             type="text"
             defaultValue={"admin"}
+            autoComplete="off"
             fluid
           />
         </Grid.Column>
@@ -50,7 +48,7 @@ export function Login({ title, onLogin, error }: ILogin) {
           <Button type="submit">Login !</Button>
         </Grid.Column>
       </Grid>
-      <div className="text-red-600 h-6">{!!error ? error.message : null}</div>
+      <div>{!!error ? error.message : null}</div>
     </Form>
   );
 }

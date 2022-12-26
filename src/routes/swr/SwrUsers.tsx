@@ -1,15 +1,11 @@
 import { UsersTable } from "@components/UsersTable";
 import useSWR from "swr";
-import { httpClient, TokenRegistry } from "@utils";
+import { authHttpClient, httpClient, TokenRegistry } from "@utils";
 import { usersSchema } from "@models";
 
 export function SwrUsers() {
   const { data, error } = useSWR(["users"], async () => {
-    const data = await httpClient("/api/users", {
-      headers: {
-        Authorization: `Bearer ${TokenRegistry.token}`,
-      },
-    });
+    const data = await authHttpClient("/api/users");
 
     return usersSchema.parse(data);
   });
