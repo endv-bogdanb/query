@@ -1,7 +1,7 @@
 import { rest } from "msw";
 import { db } from "../db";
-import { JWT, makeUrl } from "../utils";
-import { loginReqSchema } from "@models";
+import { bearerSchema, JWT, makeUrl } from "../utils";
+import { loginReqSchema, refreshReqSchema } from "@models";
 
 const handlers = [
   rest.post(makeUrl("login"), async (req, res, ctx) => {
@@ -17,7 +17,10 @@ const handlers = [
       if (user?.password === data.password) {
         const jwt = await JWT.jwt({ id: user.id });
 
-        return res(ctx.status(200), ctx.json({ user, token: jwt }));
+        return res(
+          ctx.status(200),
+          ctx.json({ user, token: jwt, refreshToken: crypto.randomUUID() })
+        );
       }
 
       return res(
@@ -28,6 +31,29 @@ const handlers = [
       return res(
         ctx.status(400),
         ctx.json({ message: "Invalid credentials", status: 400 })
+      );
+    }
+  }),
+  rest.post(makeUrl("refresh"), async (req, res, ctx) => {
+    const payload = await req.json();
+    const body = refreshReqSchema.safeParse(payload);
+
+    const jwt = bearerSchema.safeParse(req.headers.get("Authorization"));
+
+    if (body.success && jwt.success) {
+      const { userId } = JWT.decode(jwt.data);
+
+      return res(
+        ctx.status(200),
+        ctx.json({
+          token: await JWT.jwt({ id: userId }),
+          refreshToken: crypto.randomUUID(),
+        })
+      );
+    } else {
+      return res(
+        ctx.status(401),
+        ctx.json({ message: "Unauthorized", status: 400 })
       );
     }
   }),

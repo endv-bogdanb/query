@@ -1,6 +1,6 @@
 import { useSyncExternalStore } from "react";
 
-const state = { token: "" };
+const state = { token: "", refreshToken: "" };
 
 const subscribers = new Set<() => void>();
 
@@ -34,6 +34,21 @@ export class TokenRegistry {
     return state.token;
   }
 
+  static set refreshToken(value: string) {
+    state.refreshToken = value;
+    TokenRegistry.notify();
+    sessionStorage.setItem("REFRESH_TOKEN", JSON.stringify(state.refreshToken));
+  }
+
+  static get refreshToken() {
+    if (!state.refreshToken) {
+      const token = sessionStorage.getItem("REFRESH_TOKEN");
+      if (token) {
+        TokenRegistry.refreshToken = JSON.parse(token);
+      }
+    }
+    return state.refreshToken;
+  }
   static notify = () => {
     for (const subscriber of subscribers) {
       subscriber();

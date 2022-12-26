@@ -2,7 +2,7 @@ import { RestRequest } from "msw";
 import { JWT } from "./Jwt";
 import { z } from "zod";
 
-const bearerSchema = z
+export const bearerSchema = z
   .string()
   .refine((value) => value.startsWith("Bearer "), { message: "Invalid token" })
   .transform((value) => value.slice("Bearer ".length));
