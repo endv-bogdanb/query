@@ -2,14 +2,14 @@ import React from "react";
 import ReactDOM from "react-dom/client";
 import { createHashRouter, RouterProvider } from "react-router-dom";
 
-import 'semantic-ui-css/semantic.min.css'
+import "semantic-ui-css/semantic.min.css";
 
 import { ErrorPage } from "@components";
 import { Root } from "@routes/Root";
 import { QueryLogin, QueryRoot, QueryUsers } from "@routes/query";
 import { SwrLogin, SwrRoot, SwrUsers } from "@routes/swr";
 import { ToolkitLogin, ToolkitRoot, ToolkitUsers } from "@routes/toolkit";
-import { getPublicUrl, isProduction } from "@utils";
+import { getPublicUrl, isProduction, TokenRegistry } from "@utils";
 
 const router = createHashRouter([
   {
@@ -62,6 +62,10 @@ import("./backend/browser")
     } else {
       worker.start();
     }
+    return Promise.resolve();
+  })
+  .then(() => {
+    TokenRegistry.setup();
     return Promise.resolve();
   })
   .then(() => start());
