@@ -1,7 +1,10 @@
+import { Mutex } from "async-mutex";
 import { HttpError } from "./HttpError";
 import { httpErrorMessage, parseResponse, setRafTimeout } from "./utils";
 import { TokenRegistry } from "../TokenRegistry";
 import { refreshResSchema } from "@models";
+
+const mutex = new Mutex();
 
 function makeTimeoutPromise() {
   let cancel: () => void | undefined;
@@ -51,38 +54,54 @@ async function retryHttpClient(
   init: RequestInit
 ): Promise<unknown> {
   try {
+    // Waits for mutex to be available without locking
+    await mutex.waitForUnlock();
     return await httpClient(url, init);
   } catch (e) {
-    if (HttpError.isHttpError(e) && e.code === 401) {
-      const response = await httpClient("/api/refresh", {
-        method: "POST",
-        body: JSON.stringify({ refreshToken: TokenRegistry.refreshToken }),
-        headers: { Authorization: `Bearer ${TokenRegistry.token}` },
-      });
-
-      const data = refreshResSchema.safeParse(response);
-
-      if (!data.success) {
-        throw new HttpError("Unauthorized", 401, "Unauthorized");
-      }
-
-      const {
-        data: { token, refreshToken },
-      } = data;
-
-      TokenRegistry.token = token;
-      TokenRegistry.refreshToken = refreshToken;
-
-      return await httpClient(url, {
-        ...init,
-        headers: {
-          ...init.headers,
-          Authorization: `Bearer ${TokenRegistry.token}`,
-        },
-      });
+    if (!HttpError.isUnauthenticated(e)) {
+      throw e;
     }
 
-    throw e;
+    // Checks if mutex is locked
+    if (!mutex.isLocked()) {
+      // Locks the mutex
+      const release = await mutex.acquire();
+      try {
+        const response = await httpClient("/api/refresh", {
+          method: "POST",
+          body: JSON.stringify({ refreshToken: TokenRegistry.refreshToken }),
+          headers: { Authorization: `Bearer ${TokenRegistry.token}` },
+        });
+
+        const data = refreshResSchema.safeParse(response);
+
+        if (!data.success) {
+          TokenRegistry.reset();
+          throw new HttpError("Unauthorized", 401, "Unauthorized");
+        }
+
+        const {
+          data: { token, refreshToken },
+        } = data;
+
+        TokenRegistry.token = token;
+        TokenRegistry.refreshToken = refreshToken;
+      } finally {
+        // Unlocks the mutex
+        release();
+      }
+    }
+
+    // Waits for mutex to be available without locking
+    await mutex.waitForUnlock();
+
+    return await httpClient(url, {
+      ...init,
+      headers: {
+        ...init.headers,
+        Authorization: `Bearer ${TokenRegistry.token}`,
+      },
+    });
   }
 }
 

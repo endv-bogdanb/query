@@ -12,4 +12,8 @@ export class HttpError extends Error {
   static isHttpError = (error: unknown): error is HttpError => {
     return (error as HttpError)?.name === "HTTP_ERROR";
   };
+
+  static isUnauthenticated = (error: unknown): boolean => {
+    return this.isHttpError(error) && error.code === 401;
+  };
 }

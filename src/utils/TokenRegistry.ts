@@ -1,6 +1,6 @@
 import { useSyncExternalStore } from "react";
 
-const state = { token: "", refreshToken: "" };
+let state = { token: "", refreshToken: "" };
 
 const subscribers = new Set<() => void>();
 
@@ -18,44 +18,55 @@ export function useSession() {
 }
 
 export class TokenRegistry {
+  static setup = () => {
+    try {
+      const token = JSON.parse(sessionStorage.getItem("TOKEN")!);
+      const refreshToken = JSON.parse(sessionStorage.getItem("REFRESH_TOKEN")!);
+
+      if (token && refreshToken) {
+        state = { token, refreshToken };
+      }
+    } catch {}
+  };
+
   static set token(value: string) {
-    state.token = value;
-    TokenRegistry.notify();
-    sessionStorage.setItem("TOKEN", JSON.stringify(state.token));
+    state = { ...state, token: value };
+    this.persist();
+    this.notify();
   }
 
   static get token() {
-    if (!state.token) {
-      const token = sessionStorage.getItem("TOKEN");
-      if (token) {
-        TokenRegistry.token = JSON.parse(token);
-      }
-    }
     return state.token;
   }
 
   static set refreshToken(value: string) {
-    state.refreshToken = value;
-    TokenRegistry.notify();
-    sessionStorage.setItem("REFRESH_TOKEN", JSON.stringify(state.refreshToken));
+    state = { ...state, refreshToken: value };
+    this.persist();
+    this.notify();
   }
 
   static get refreshToken() {
-    if (!state.refreshToken) {
-      const token = sessionStorage.getItem("REFRESH_TOKEN");
-      if (token) {
-        TokenRegistry.refreshToken = JSON.parse(token);
-      }
-    }
     return state.refreshToken;
   }
+
   static notify = () => {
     for (const subscriber of subscribers) {
       subscriber();
     }
   };
 
+  static persist = () => {
+    sessionStorage.setItem("TOKEN", JSON.stringify(state.token));
+    sessionStorage.setItem("REFRESH_TOKEN", JSON.stringify(state.refreshToken));
+  };
+
   static reset = () => {
-    state.token = "";
+    state = {
+      token: "",
+      refreshToken: "",
+    };
+    sessionStorage.removeItem("TOKEN");
+    sessionStorage.removeItem("REFRESH_TOKEN");
+    this.notify();
   };
 }
