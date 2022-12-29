@@ -86,6 +86,9 @@ async function retryHttpClient(
 
         TokenRegistry.token = token;
         TokenRegistry.refreshToken = refreshToken;
+      } catch (e) {
+        TokenRegistry.reset();
+        throw e;
       } finally {
         // Unlocks the mutex
         release();
