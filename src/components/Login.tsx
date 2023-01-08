@@ -1,4 +1,14 @@
-import { Button, Form, Grid, Header, Input } from "semantic-ui-react";
+import {
+  Button,
+  Grid,
+  TextInput,
+  Paper,
+  Title,
+  Space,
+  Container,
+  Center,
+  Text,
+} from "@mantine/core";
 import { loginReqSchema, TLoginReq } from "@models";
 
 export interface ILogin {
@@ -9,46 +19,44 @@ export interface ILogin {
 
 export function Login({ title, onLogin, error }: ILogin) {
   return (
-    <Form
-      onSubmit={(e) => {
-        e.preventDefault();
-        const data = new FormData(e.target as HTMLFormElement);
-        const values = loginReqSchema.safeParse(
-          Object.fromEntries(data.entries())
-        );
+    <Container size="xs">
+      <Paper shadow={"lg"} p="lg">
+        <form
+          onSubmit={(e) => {
+            e.preventDefault();
+            const data = new FormData(e.target as HTMLFormElement);
+            const values = loginReqSchema.safeParse(
+              Object.fromEntries(data.entries())
+            );
 
-        if (values.success) {
-          onLogin(values.data);
-        }
-      }}
-    >
-      <Header>{title}</Header>
-      <Grid columns={1} centered>
-        <Grid.Column>
-          <Input
+            if (values.success) {
+              onLogin(values.data);
+            }
+          }}
+        >
+          <Title order={4}>{title}</Title>
+          <Space h="md" />
+          <TextInput
             name="username"
             label="Username"
             type="text"
             defaultValue={"admin"}
             autoComplete="off"
-            fluid
           />
-        </Grid.Column>
-        <Grid.Column>
-          <Input
+          <TextInput
             name="password"
             label="Password"
             type="password"
             autoComplete="off"
             defaultValue={"admin"}
-            fluid
           />
-        </Grid.Column>
-        <Grid.Column textAlign="center">
-          <Button type="submit">Login !</Button>
-        </Grid.Column>
-      </Grid>
-      <div>{!!error ? error.message : null}</div>
-    </Form>
+          <Space h="md" />
+          <Center>
+            <Button type="submit">Login !</Button>
+          </Center>
+          <Text c="red.9">{!!error ? error.message : null}</Text>
+        </form>
+      </Paper>
+    </Container>
   );
 }

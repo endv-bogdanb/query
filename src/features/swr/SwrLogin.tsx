@@ -20,7 +20,6 @@ export function SwrLogin() {
   );
 
   return (
-    <Layout>
       <Login
         title="Swr login"
         onLogin={async (value) => {
@@ -42,6 +41,5 @@ export function SwrLogin() {
         }}
         error={error}
       />
-    </Layout>
   );
 }

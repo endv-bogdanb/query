@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { Link, Outlet } from "react-router-dom";
 import { Layout } from "@components/Layout";
 import { getPublicUrl, httpClient, TokenRegistry, useSession } from "@utils";
-import { Divider, Grid, Label, List, ListItem } from "semantic-ui-react";
+import { Button, Divider, Space, Navbar } from "@mantine/core";
 
 export function Root() {
   const [version, setVersion] = useState<string | null>(null);
@@ -29,37 +29,27 @@ export function Root() {
 
   return (
     <Layout>
-      <Grid columns={2}>
-        <Grid.Column>
-          {version !== null ? <>version: {version}</> : null}
-        </Grid.Column>
-        <Grid.Column textAlign="right">
-          <List as="nav" horizontal>
-            <ListItem as={Link} to="/query">
-              query
-            </ListItem>
-            <ListItem as={Link} to="/swr">
-              swr
-            </ListItem>
-            <ListItem as={Link} to="/toolkit-query">
-              toolkit query
-            </ListItem>
-            {!!session && !!session.token && !!session.refreshToken && (
-              <ListItem
-                style={{
-                  cursor: "pointer",
-                  color: "#1e70bf",
-                  fontWeight: "lighter",
-                }}
-                onClick={() => TokenRegistry.reset()}
-              >
-                logout
-              </ListItem>
-            )}
-          </List>
-        </Grid.Column>
-      </Grid>
+      <div style={{ display: "flex", justifyContent: "space-between" }}>
+        <div>{version !== null ? <>version: {version}</> : null}</div>
+        <nav style={{ display: "flex", gap: 16 }}>
+          <Link to="/query">query</Link>
+          <Link to="/swr">swr</Link>
+          <Link to="/toolkit-query"> toolkit query </Link>
+          {!!session && !!session.token && !!session.refreshToken && (
+            <Link
+              to=""
+              onClick={(e) => {
+                e.preventDefault();
+                TokenRegistry.reset();
+              }}
+            >
+              logout
+            </Link>
+          )}
+        </nav>
+      </div>
       <Divider />
+      <Space h="xl" />
       <Outlet />
     </Layout>
   );

@@ -10,7 +10,6 @@ export function ToolkitLogin() {
   const [login, { error }] = useLoginMutation();
 
   return (
-    <Layout>
       <Login
         title="Toolkit login"
         onLogin={async (value) => {
@@ -28,6 +27,5 @@ export function ToolkitLogin() {
         }}
         error={(error as FetchBaseQueryError)?.data as { message: string }}
       />
-    </Layout>
   );
 }

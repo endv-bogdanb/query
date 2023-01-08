@@ -1,10 +1,15 @@
 import { ReactNode } from "react";
-import { Container } from "semantic-ui-react";
+import { Container, createStyles } from "@mantine/core";
 
 export interface ILayout {
   children: ReactNode;
 }
 
 export function Layout({ children }: ILayout) {
-  return <Container>{children}</Container>;
+  const { classes } = useStyles();
+  return <Container className={classes.wrapper}>{children}</Container>;
 }
+
+const useStyles = createStyles(() => ({
+  wrapper: { height: "100vh" },
+}));
