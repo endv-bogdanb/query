@@ -2,7 +2,7 @@ import { Layout, Login } from "@components";
 import { FetchBaseQueryError } from "@reduxjs/toolkit/dist/query";
 import { TokenRegistry } from "@utils";
 import { useNavigate } from "react-router-dom";
-import { useLoginMutation } from "./store/api";
+import { useLoginMutation } from "./store/api/api";
 
 export function ToolkitLogin() {
   const navigate = useNavigate();

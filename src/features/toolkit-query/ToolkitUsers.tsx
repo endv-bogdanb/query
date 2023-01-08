@@ -1,5 +1,5 @@
 import { UsersTable } from "@components/UsersTable";
-import { useUsersQuery } from "./store/api";
+import { useUsersQuery } from "./store/api/api";
 
 export function ToolkitUsers() {
   const { data, error, isLoading, refetch } = useUsersQuery();
