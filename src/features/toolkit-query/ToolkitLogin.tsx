@@ -7,25 +7,26 @@ import { useLoginMutation } from "./store/api";
 export function ToolkitLogin() {
   const navigate = useNavigate();
 
-  const [login, { error }] = useLoginMutation();
+  const [login, { error, isLoading }] = useLoginMutation();
 
   return (
-      <Login
-        title="Toolkit login"
-        onLogin={async (value) => {
-          try {
-            const { token, refreshToken, user } = await login(value).unwrap();
+    <Login
+      title="Toolkit login"
+      onLogin={async (value) => {
+        try {
+          const { token, refreshToken, user } = await login(value).unwrap();
 
-            TokenRegistry.token = token;
-            TokenRegistry.refreshToken = refreshToken;
-            TokenRegistry.user = user;
+          TokenRegistry.token = token;
+          TokenRegistry.refreshToken = refreshToken;
+          TokenRegistry.user = user;
 
-            navigate("users");
-          } catch (e) {
-            console.log("err", e);
-          }
-        }}
-        error={(error as FetchBaseQueryError)?.data as { message: string }}
-      />
+          navigate("users");
+        } catch (e) {
+          console.log("err", e);
+        }
+      }}
+      loading={isLoading}
+      error={(error as FetchBaseQueryError)?.data as { message: string }}
+    />
   );
 }

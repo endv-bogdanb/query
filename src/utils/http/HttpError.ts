@@ -16,4 +16,21 @@ export class HttpError extends Error {
   static isUnauthenticated = (error: unknown): boolean => {
     return this.isHttpError(error) && error.code === 401;
   };
+
+  static getErrorMessage = (error: unknown) => {
+    if (this.isHttpError(error)) {
+      return error.message;
+    } else if (
+      error !== null &&
+      typeof error === "object" &&
+      "data" in error &&
+      error.data !== null &&
+      typeof error.data === "object" &&
+      "message" in error.data &&
+      typeof error.data.message === "string"
+    ) {
+      return error.data.message;
+    }
+    return "Unknown";
+  };
 }
