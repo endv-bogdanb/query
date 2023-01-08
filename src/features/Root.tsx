@@ -12,7 +12,7 @@ export function Root() {
   useEffect(() => {
     const ab = new AbortController();
 
-    httpClient(getPublicUrl("version.txt"), {
+    httpClient(getPublicUrl("version.txt", import.meta.env.DEV), {
       signal: ab.signal,
     })
       .then((txt) => {

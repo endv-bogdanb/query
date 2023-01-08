@@ -3,7 +3,7 @@ import ReactDOM from "react-dom/client";
 import { createHashRouter, RouterProvider } from "react-router-dom";
 import { MantineProvider } from "@mantine/core";
 import { routes } from "@routes";
-import { getPublicUrl, isProduction, TokenRegistry } from "@utils";
+import { getPublicUrl, TokenRegistry } from "@utils";
 
 const router = createHashRouter(routes);
 
@@ -19,7 +19,7 @@ function start() {
 
 import("./backend/browser")
   .then(({ worker }) => {
-    if (isProduction()) {
+    if (import.meta.env.PROD) {
       worker.start({
         serviceWorker: { url: getPublicUrl("mockServiceWorker.js") },
       });
