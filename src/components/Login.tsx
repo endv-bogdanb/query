@@ -1,6 +1,5 @@
 import {
   Button,
-  Grid,
   TextInput,
   Paper,
   Title,
@@ -8,19 +7,22 @@ import {
   Container,
   Center,
   Text,
+  LoadingOverlay,
 } from "@mantine/core";
 import { loginReqSchema, TLoginReq } from "@models";
 
 export interface ILogin {
   title: string;
   onLogin: (user: TLoginReq) => void;
+  loading: boolean;
   error?: { message: string };
 }
 
-export function Login({ title, onLogin, error }: ILogin) {
+export function Login({ title, onLogin, loading, error }: ILogin) {
   return (
     <Container size="xs">
       <Paper shadow={"lg"} p="lg">
+        <LoadingOverlay visible={loading} />
         <form
           onSubmit={(e) => {
             e.preventDefault();

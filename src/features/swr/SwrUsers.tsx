@@ -4,16 +4,20 @@ import { authHttpClient, httpClient, TokenRegistry } from "@utils";
 import { usersSchema } from "@models";
 
 export function SwrUsers() {
-  const { data, error } = useSWR(["users"], async () => {
+  const { data, error, isLoading, mutate } = useSWR(["users"], async () => {
     const data = await authHttpClient("/api/users");
 
     return usersSchema.parse(data);
   });
 
   return (
-    <>
-      {!!data ? <UsersTable users={data} /> : null}
-      {!!error ? <pre>{JSON.stringify(error)}</pre> : null}
-    </>
+    <UsersTable
+      users={data}
+      loading={isLoading}
+      error={error}
+      retry={() => {
+        mutate();
+      }}
+    />
   );
 }

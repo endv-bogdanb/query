@@ -17,22 +17,23 @@ export function QueryLogin() {
   });
 
   return (
-      <Login
-        title="Query login"
-        onLogin={async (value) => {
-          try {
-            const data = await login.mutateAsync(value);
+    <Login
+      title="Query login"
+      onLogin={async (value) => {
+        try {
+          const data = await login.mutateAsync(value);
 
-            TokenRegistry.token = data.token;
-            TokenRegistry.refreshToken = data.refreshToken;
-            TokenRegistry.user = data.user;
+          TokenRegistry.token = data.token;
+          TokenRegistry.refreshToken = data.refreshToken;
+          TokenRegistry.user = data.user;
 
-            navigate("users");
-          } catch (e) {
-            console.log("err", e);
-          }
-        }}
-        error={login.error as { message: string }}
-      />
+          navigate("users");
+        } catch (e) {
+          console.log("err", e);
+        }
+      }}
+      loading={login.isLoading}
+      error={login.error as { message: string }}
+    />
   );
 }
