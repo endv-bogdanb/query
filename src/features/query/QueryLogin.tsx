@@ -17,7 +17,6 @@ export function QueryLogin() {
   });
 
   return (
-    <Layout>
       <Login
         title="Query login"
         onLogin={async (value) => {
@@ -35,6 +34,5 @@ export function QueryLogin() {
         }}
         error={login.error as { message: string }}
       />
-    </Layout>
   );
 }
