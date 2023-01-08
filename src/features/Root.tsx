@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { Link, Outlet } from "react-router-dom";
 import { Layout } from "@components/Layout";
 import { getPublicUrl, httpClient, TokenRegistry, useSession } from "@utils";
-import { Button, Divider, Space, Navbar } from "@mantine/core";
+import { Divider, Space } from "@mantine/core";
 
 export function Root() {
   const [version, setVersion] = useState<string | null>(null);

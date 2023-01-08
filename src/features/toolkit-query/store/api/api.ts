@@ -1,16 +1,10 @@
 import { TLoginReq, TLoginRes, TUsers } from "@models";
-import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
-import { TokenRegistry } from "@utils";
+import { createApi } from "@reduxjs/toolkit/query/react";
+import { baseQuery } from "./utils";
 
 export const api = createApi({
   reducerPath: "api",
-  baseQuery: fetchBaseQuery({
-    baseUrl: "/api",
-    prepareHeaders: (headers) => {
-      headers.append("Authorization", `Bearer ${TokenRegistry.token}`);
-      return headers;
-    },
-  }),
+  baseQuery,
   endpoints: (builder) => ({
     login: builder.mutation<TLoginRes, TLoginReq>({
       query: (user) => {
