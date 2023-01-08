@@ -1,8 +1,8 @@
-import { Layout, Login } from "@components";
-import { loginResSchema } from "@models";
-import { httpClient, TokenRegistry } from "@utils";
 import { useNavigate } from "react-router-dom";
 import useSWRMutation from "swr/mutation";
+import { Login } from "@components";
+import { loginResSchema } from "@models";
+import { httpClient, TokenRegistry } from "@utils";
 
 export function SwrLogin() {
   const navigate = useNavigate();

@@ -1,5 +1,5 @@
-import { TUser } from "@models";
 import { useSyncExternalStore } from "react";
+import { TUser } from "@models";
 
 export interface IState {
   token: string;

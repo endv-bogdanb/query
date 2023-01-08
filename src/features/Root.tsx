@@ -1,8 +1,8 @@
 import { useEffect, useState } from "react";
 import { Link, Outlet } from "react-router-dom";
+import { Divider, Space } from "@mantine/core";
 import { Layout } from "@components/Layout";
 import { getPublicUrl, httpClient, TokenRegistry, useSession } from "@utils";
-import { Divider, Space } from "@mantine/core";
 
 export function Root() {
   const [version, setVersion] = useState<string | null>(null);
@@ -25,7 +25,7 @@ export function Root() {
     return () => {
       ab.abort();
     };
-  });
+  }, [version, setVersion]);
 
   return (
     <Layout>

@@ -1,5 +1,5 @@
-import { isPublicApi, isAuthenticated, makeUrl } from "@backend/utils";
 import { ResponseComposition, rest, RestContext, RestRequest } from "msw";
+import { isAuthenticated, isPublicApi, makeUrl } from "@backend/utils";
 
 async function authMiddleware(
   req: RestRequest,

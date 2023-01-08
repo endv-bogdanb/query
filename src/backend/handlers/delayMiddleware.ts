@@ -1,5 +1,5 @@
-import { makeUrl, sleep } from "@backend/utils";
 import { rest } from "msw";
+import { makeUrl, sleep } from "@backend/utils";
 
 async function delayMiddleware() {
   const delay = import.meta.env.DEV ? 500 : 1000;

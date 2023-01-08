@@ -1,2 +1,2 @@
-export * from "./HttpError";
 export * from "./httpClient";
+export * from "./HttpError";

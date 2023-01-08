@@ -1,5 +1,5 @@
-import { factory, primaryKey, oneOf } from "@mswjs/data";
 import { faker } from "@faker-js/faker";
+import { factory, oneOf, primaryKey } from "@mswjs/data";
 
 function makeAutoIncrement() {
   let id = 0;

@@ -1,4 +1,3 @@
-import { TUsers } from "@models";
 import {
   Button,
   Center,
@@ -7,6 +6,7 @@ import {
   Table,
   Text,
 } from "@mantine/core";
+import { TUsers } from "@models";
 import { HttpError } from "@utils";
 
 export interface IUserTable {

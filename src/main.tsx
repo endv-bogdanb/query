@@ -2,7 +2,6 @@ import React from "react";
 import ReactDOM from "react-dom/client";
 import { createHashRouter, RouterProvider } from "react-router-dom";
 import { MantineProvider } from "@mantine/core";
-
 import { routes } from "@routes";
 import { getPublicUrl, isProduction, TokenRegistry } from "@utils";
 

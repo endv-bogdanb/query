@@ -1,13 +1,13 @@
 import {
   Button,
-  TextInput,
-  Paper,
-  Title,
-  Space,
-  Container,
   Center,
-  Text,
+  Container,
   LoadingOverlay,
+  Paper,
+  Space,
+  Text,
+  TextInput,
+  Title,
 } from "@mantine/core";
 import { loginReqSchema, TLoginReq } from "@models";
 
@@ -45,6 +45,7 @@ export function Login({ title, onLogin, loading, error }: ILogin) {
             defaultValue={"admin"}
             autoComplete="off"
           />
+          <Space h="xs" />
           <TextInput
             name="password"
             label="Password"
@@ -56,7 +57,7 @@ export function Login({ title, onLogin, loading, error }: ILogin) {
           <Center>
             <Button type="submit">Login !</Button>
           </Center>
-          <Text c="red.9">{!!error ? error.message : null}</Text>
+          <Text c="red.9">{error ? error.message : null}</Text>
         </form>
       </Paper>
     </Container>

@@ -1,6 +1,6 @@
 import { RestRequest } from "msw";
-import { JWT } from "./Jwt";
 import { z } from "zod";
+import { JWT } from "./Jwt";
 
 export const bearerSchema = z
   .string()

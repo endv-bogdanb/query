@@ -1,7 +1,7 @@
+import { useQuery } from "react-query";
 import { UsersTable } from "@components/UsersTable";
 import { usersSchema } from "@models";
-import { authHttpClient, HttpError } from "@utils";
-import { useQuery } from "react-query";
+import { authHttpClient } from "@utils";
 
 export function QueryUsers() {
   const { data, error, isLoading, refetch } = useQuery(
