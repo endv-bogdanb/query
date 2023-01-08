@@ -26,8 +26,16 @@ export function SwrLogin() {
         onLogin={async (value) => {
           try {
             const data = await trigger(value);
-            TokenRegistry.token = data?.token ?? "";
-            navigate("/swr/users");
+
+            if (!data) {
+              throw data;
+            }
+
+            TokenRegistry.token = data.token;
+            TokenRegistry.refreshToken = data.refreshToken;
+            TokenRegistry.user = data.user;
+
+            navigate("users");
           } catch (e) {
             console.log("err", e);
           }

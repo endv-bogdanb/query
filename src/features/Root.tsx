@@ -1,11 +1,13 @@
 import { useEffect, useState } from "react";
 import { Link, Outlet } from "react-router-dom";
 import { Layout } from "@components/Layout";
-import { getPublicUrl, httpClient } from "@utils";
-import { Divider, Grid, List, ListItem } from "semantic-ui-react";
+import { getPublicUrl, httpClient, TokenRegistry, useSession } from "@utils";
+import { Divider, Grid, Label, List, ListItem } from "semantic-ui-react";
 
 export function Root() {
   const [version, setVersion] = useState<string | null>(null);
+
+  const session = useSession();
 
   useEffect(() => {
     const ab = new AbortController();
@@ -42,6 +44,18 @@ export function Root() {
             <ListItem as={Link} to="/toolkit-query">
               toolkit query
             </ListItem>
+            {!!session && !!session.token && !!session.refreshToken && (
+              <ListItem
+                style={{
+                  cursor: "pointer",
+                  color: "#1e70bf",
+                  fontWeight: "lighter",
+                }}
+                onClick={() => TokenRegistry.reset()}
+              >
+                logout
+              </ListItem>
+            )}
           </List>
         </Grid.Column>
       </Grid>

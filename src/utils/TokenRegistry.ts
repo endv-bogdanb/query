@@ -1,6 +1,17 @@
+import { TUser } from "@models";
 import { useSyncExternalStore } from "react";
 
-let state = { token: "", refreshToken: "" };
+export interface IState {
+  token: string;
+  refreshToken: string;
+  user: TUser | null;
+}
+
+let state: IState = {
+  token: "",
+  refreshToken: "",
+  user: null,
+};
 
 const subscribers = new Set<() => void>();
 
@@ -24,7 +35,7 @@ export class TokenRegistry {
       const refreshToken = JSON.parse(sessionStorage.getItem("REFRESH_TOKEN")!);
 
       if (token && refreshToken) {
-        state = { token, refreshToken };
+        state = { token, refreshToken, user: null };
       }
     } catch {}
   };
@@ -49,6 +60,15 @@ export class TokenRegistry {
     return state.refreshToken;
   }
 
+  static set user(value: TUser | null) {
+    state = { ...state, user: value };
+    this.notify();
+  }
+
+  static get user() {
+    return state.user;
+  }
+
   static notify = () => {
     for (const subscriber of subscribers) {
       subscriber();
@@ -64,6 +84,7 @@ export class TokenRegistry {
     state = {
       token: "",
       refreshToken: "",
+      user: null,
     };
     sessionStorage.removeItem("TOKEN");
     sessionStorage.removeItem("REFRESH_TOKEN");
