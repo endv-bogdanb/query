@@ -1,12 +1,6 @@
 import { Link, useRouteError } from "react-router-dom";
-import { z } from "zod";
 import { createStyles, Text } from "@mantine/core";
 import { Layout } from "./Layout";
-
-const errorSchema = z.object({
-  statusText: z.string().optional(),
-  message: z.string().optional(),
-});
 
 export function ErrorPage() {
   const { classes } = useStyles();

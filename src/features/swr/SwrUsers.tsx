@@ -1,7 +1,7 @@
-import { UsersTable } from "@components/UsersTable";
 import useSWR from "swr";
-import { authHttpClient, httpClient, TokenRegistry } from "@utils";
+import { UsersTable } from "@components/UsersTable";
 import { usersSchema } from "@models";
+import { authHttpClient } from "@utils";
 
 export function SwrUsers() {
   const { data, error, isLoading, mutate } = useSWR(["users"], async () => {

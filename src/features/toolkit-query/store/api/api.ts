@@ -1,5 +1,5 @@
-import { TLoginReq, TLoginRes, TUsers } from "@models";
 import { createApi } from "@reduxjs/toolkit/query/react";
+import { TLoginReq, TLoginRes, TUsers } from "@models";
 import { baseQuery } from "./utils";
 
 export const api = createApi({

@@ -1,8 +1,8 @@
 import { useMutation } from "react-query";
 import { useNavigate } from "react-router-dom";
-import { Layout, Login } from "@components";
-import { httpClient, TokenRegistry } from "@utils";
+import { Login } from "@components";
 import { loginResSchema, TLoginReq } from "@models";
+import { httpClient, TokenRegistry } from "@utils";
 
 export function QueryLogin() {
   const navigate = useNavigate();

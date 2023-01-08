@@ -1,7 +1,7 @@
 import { rest } from "msw";
+import { loginReqSchema, refreshReqSchema } from "@models";
 import { db } from "../db";
 import { bearerSchema, JWT, makeUrl } from "../utils";
-import { loginReqSchema, refreshReqSchema } from "@models";
 
 const handlers = [
   rest.post(makeUrl("login"), async (req, res, ctx) => {

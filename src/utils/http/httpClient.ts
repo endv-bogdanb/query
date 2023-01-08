@@ -1,8 +1,8 @@
 import { Mutex } from "async-mutex";
+import { refreshResSchema } from "@models";
+import { TokenRegistry } from "../TokenRegistry";
 import { HttpError } from "./HttpError";
 import { httpErrorMessage, parseResponse, setRafTimeout } from "./utils";
-import { TokenRegistry } from "../TokenRegistry";
-import { refreshResSchema } from "@models";
 
 const mutex = new Mutex();
 

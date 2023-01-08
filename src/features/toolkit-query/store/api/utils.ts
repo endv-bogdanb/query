@@ -1,12 +1,12 @@
-import { refreshResSchema } from "@models";
+import { Mutex } from "async-mutex";
 import {
-  fetchBaseQuery,
   BaseQueryFn,
   FetchArgs,
+  fetchBaseQuery,
   FetchBaseQueryError,
 } from "@reduxjs/toolkit/dist/query";
+import { refreshResSchema } from "@models";
 import { TokenRegistry } from "@utils";
-import { Mutex } from "async-mutex";
 
 const mutex = new Mutex();
 

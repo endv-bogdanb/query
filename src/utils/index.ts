@@ -1,4 +1,4 @@
-export * from "./TokenRegistry";
-export * from "./isProduction";
 export * from "./getPublicUrl";
 export * from "./http";
+export * from "./isProduction";
+export * from "./TokenRegistry";
