@@ -15,9 +15,13 @@ export function ToolkitLogin() {
         title="Toolkit login"
         onLogin={async (value) => {
           try {
-            const { token } = await login(value).unwrap();
+            const { token, refreshToken, user } = await login(value).unwrap();
+
             TokenRegistry.token = token;
-            navigate("/toolkit-query/users");
+            TokenRegistry.refreshToken = refreshToken;
+            TokenRegistry.user = user;
+
+            navigate("users");
           } catch (e) {
             console.log("err", e);
           }

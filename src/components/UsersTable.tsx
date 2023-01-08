@@ -1,5 +1,5 @@
 import { TUsers } from "@models";
-import { Table } from "semantic-ui-react";
+import { Label, Table } from "semantic-ui-react";
 
 export interface IUserTable {
   users: TUsers;
@@ -19,7 +19,9 @@ export function UsersTable({ users }: IUserTable) {
       <Table.Body>
         {users.map((user) => (
           <Table.Row key={user.id}>
-            <Table.Cell>{user.id}</Table.Cell>
+            <Table.Cell>
+              <Label ribbon>{user.id}</Label>
+            </Table.Cell>
             <Table.Cell>{user.username}</Table.Cell>
             <Table.Cell>{user.profile.firstName}</Table.Cell>
             <Table.Cell>{user.profile.lastName}</Table.Cell>

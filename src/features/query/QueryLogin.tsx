@@ -22,10 +22,13 @@ export function QueryLogin() {
         title="Query login"
         onLogin={async (value) => {
           try {
-            const { token, refreshToken } = await login.mutateAsync(value);
-            TokenRegistry.token = token;
-            TokenRegistry.refreshToken = refreshToken;
-            navigate("/query/users");
+            const data = await login.mutateAsync(value);
+
+            TokenRegistry.token = data.token;
+            TokenRegistry.refreshToken = data.refreshToken;
+            TokenRegistry.user = data.user;
+
+            navigate("users");
           } catch (e) {
             console.log("err", e);
           }

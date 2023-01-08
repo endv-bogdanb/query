@@ -15,12 +15,10 @@ const handlers = [
       });
 
       if (user?.password === data.password) {
-        const jwt = await JWT.jwt({ id: user.id });
+        const token = await JWT.jwt({ id: user.id });
+        const refreshToken = crypto.randomUUID();
 
-        return res(
-          ctx.status(200),
-          ctx.json({ user, token: jwt, refreshToken: crypto.randomUUID() })
-        );
+        return res(ctx.status(200), ctx.json({ user, token, refreshToken }));
       }
 
       return res(
@@ -34,6 +32,7 @@ const handlers = [
       );
     }
   }),
+
   rest.post(makeUrl("refresh"), async (req, res, ctx) => {
     const payload = await req.json();
     const body = refreshReqSchema.safeParse(payload);
@@ -43,13 +42,10 @@ const handlers = [
     if (body.success && jwt.success) {
       const { userId } = JWT.decode(jwt.data);
 
-      return res(
-        ctx.status(200),
-        ctx.json({
-          token: await JWT.jwt({ id: userId }),
-          refreshToken: crypto.randomUUID(),
-        })
-      );
+      const token = await JWT.jwt({ id: userId });
+      const refreshToken = crypto.randomUUID();
+
+      return res(ctx.status(200), ctx.json({ token, refreshToken }));
     } else {
       return res(
         ctx.status(401),
