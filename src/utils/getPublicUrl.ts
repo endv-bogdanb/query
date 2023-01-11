@@ -1,6 +1,4 @@
-import { isProduction } from "./isProduction";
-
-export function getPublicUrl(path: string) {
-  const url = isProduction() ? `/query/${path}` : `/${path}`;
+export function getPublicUrl(path: string, dev = false) {
+  const url = dev ? `/${path}` : `/query/${path}`;
   return url.replace(/\/\/+/, "/");
 }
