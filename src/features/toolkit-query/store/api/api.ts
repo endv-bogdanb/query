@@ -1,5 +1,5 @@
 import { createApi } from "@reduxjs/toolkit/query/react";
-import { TLoginReq, TLoginRes, TUsers } from "@models";
+import { TLoginReq, TLoginRes, TUser, TUsers } from "@models";
 import { baseQuery } from "./utils";
 
 export const api = createApi({
@@ -22,7 +22,20 @@ export const api = createApi({
         };
       },
     }),
+    userById: builder.query<TUser, { id: string }>({
+      query: (params) => {
+        return {
+          url: `users/${params.id}`,
+        };
+      },
+    }),
   }),
 });
 
-export const { useLoginMutation, useUsersQuery, useLazyUsersQuery } = api;
+export const {
+  useLoginMutation,
+  useUsersQuery,
+  useLazyUsersQuery,
+  useUserByIdQuery,
+  useLazyUserByIdQuery,
+} = api;

@@ -18,7 +18,7 @@ export const db = factory({
     id: primaryKey(makeAutoIncrement()),
     firstName: faker.name.firstName,
     lastName: faker.name.lastName,
-    logo: faker.image.cats,
+    logo: faker.image.business,
   },
 });
 

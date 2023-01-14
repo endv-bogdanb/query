@@ -2,6 +2,7 @@ import { RouteObject } from "react-router";
 import { ProtectedRoute } from "../ProtectedRoute";
 import { QueryRoot } from "./Query";
 import { QueryLogin } from "./QueryLogin";
+import { QueryUserProfile } from "./QueryUserProfile";
 import { QueryUsers } from "./QueryUsers";
 
 export const queryRoutes: RouteObject = {
@@ -18,6 +19,12 @@ export const queryRoutes: RouteObject = {
         {
           path: "users",
           element: <QueryUsers />,
+          children: [
+            {
+              path: ":id",
+              element: <QueryUserProfile />,
+            },
+          ],
         },
       ],
     },

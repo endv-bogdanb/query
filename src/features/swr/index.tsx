@@ -2,6 +2,7 @@ import { RouteObject } from "react-router";
 import { ProtectedRoute } from "../ProtectedRoute";
 import { SwrRoot } from "./Swr";
 import { SwrLogin } from "./SwrLogin";
+import { SwrUserProfile } from "./SwrUserProfile";
 import { SwrUsers } from "./SwrUsers";
 
 export const swrRoutes: RouteObject = {
@@ -18,6 +19,12 @@ export const swrRoutes: RouteObject = {
         {
           path: "users",
           element: <SwrUsers />,
+          children: [
+            {
+              path: ":id",
+              element: <SwrUserProfile />,
+            },
+          ],
         },
       ],
     },
