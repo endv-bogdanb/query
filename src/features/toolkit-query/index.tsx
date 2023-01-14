@@ -2,6 +2,7 @@ import { RouteObject } from "react-router";
 import { ProtectedRoute } from "../ProtectedRoute";
 import { ToolkitRoot } from "./Toolkit";
 import { ToolkitLogin } from "./ToolkitLogin";
+import { ToolkitUserProfile } from "./ToolkitUserProfile";
 import { ToolkitUsers } from "./ToolkitUsers";
 
 export const toolkitRoutes: RouteObject = {
@@ -18,6 +19,12 @@ export const toolkitRoutes: RouteObject = {
         {
           path: "users",
           element: <ToolkitUsers />,
+          children: [
+            {
+              path: ":id",
+              element: <ToolkitUserProfile />,
+            },
+          ],
         },
       ],
     },

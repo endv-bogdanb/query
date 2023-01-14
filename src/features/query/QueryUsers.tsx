@@ -1,5 +1,6 @@
 import { useQuery } from "react-query";
-import { UsersTable } from "@components/UsersTable";
+import { Outlet } from "react-router-dom";
+import { UsersTable } from "@components";
 import { usersSchema } from "@models";
 import { authHttpClient } from "@utils";
 
@@ -11,11 +12,14 @@ export function QueryUsers() {
   );
 
   return (
-    <UsersTable
-      users={data}
-      loading={isLoading}
-      error={error}
-      retry={refetch}
-    />
+    <>
+      <UsersTable
+        users={data}
+        loading={isLoading}
+        error={error}
+        retry={refetch}
+      />
+      <Outlet />
+    </>
   );
 }

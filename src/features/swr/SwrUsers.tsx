@@ -1,3 +1,4 @@
+import { Outlet } from "react-router-dom";
 import useSWR from "swr";
 import { UsersTable } from "@components/UsersTable";
 import { usersSchema } from "@models";
@@ -11,13 +12,17 @@ export function SwrUsers() {
   });
 
   return (
-    <UsersTable
-      users={data}
-      loading={isLoading}
-      error={error}
-      retry={() => {
-        mutate();
-      }}
-    />
+    <>
+      <UsersTable
+        users={data}
+        loading={isLoading}
+        error={error}
+        retry={() => {
+          mutate();
+        }}
+      />
+
+      <Outlet />
+    </>
   );
 }

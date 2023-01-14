@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom";
 import {
   Button,
   Center,
@@ -33,7 +34,9 @@ export function UsersTable({ users, loading, error, retry }: IUserTable) {
           {users?.map((user) => (
             <tr key={user.id}>
               <td>{user.id}</td>
-              <td>{user.username}</td>
+              <td>
+                <Link to={`${user.id}`}>{user.username}</Link>
+              </td>
               <td>{user.profile.firstName}</td>
               <td>{user.profile.lastName}</td>
             </tr>
