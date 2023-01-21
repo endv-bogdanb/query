@@ -1,28 +1,35 @@
 import { useEffect, useState } from "react";
-import { Table } from "@mantine/core";
+import { Outlet } from "react-router-dom";
+import { UsersTable } from "@components";
+import { TUsers } from "@models";
 import { httpClient } from "@utils";
 
+async function getUsers(signal: AbortSignal) {
+  const { data } = (await httpClient("gql/", {
+    method: "POST",
+    body: JSON.stringify({
+      query: `
+      query GetUsers {
+        profiles {
+          __typename
+          id
+        }
+      }`,
+      variables: {},
+    }),
+    signal,
+  })) as any;
+  return data;
+}
+
 export function GqlUsers() {
-  const [users, setUsers] = useState<{ id: number; username: string }[]>([]);
+  const [users, setUsers] = useState<TUsers>([]);
 
   useEffect(() => {
     const ab = new AbortController();
 
-    httpClient("gql/", {
-      method: "POST",
-      body: JSON.stringify({
-        query: `query GetUsers {
-            users {
-                id
-                username
-            }
-        }`,
-        variables: {},
-      }),
-    })
-      .then((json) => {
-        setUsers((json as any).data.users);
-      })
+    getUsers(ab.signal)
+      .then((users) => setUsers(users))
       .catch(console.error);
 
     return () => {
@@ -31,21 +38,10 @@ export function GqlUsers() {
   }, []);
 
   return (
-    <Table>
-      <thead>
-        <tr>
-          <th>ID</th>
-          <th>Username</th>
-        </tr>
-      </thead>
-      <tbody>
-        {users?.map((user) => (
-          <tr key={user.id}>
-            <td>{user.id}</td>
-            <td>{user.username}</td>
-          </tr>
-        ))}
-      </tbody>
-    </Table>
+    <>
+      {/* eslint-disable-next-line @typescript-eslint/no-empty-function */}
+      <UsersTable users={users} loading={false} retry={() => {}} />
+      <Outlet />
+    </>
   );
 }

@@ -3,12 +3,9 @@ import { BackendRepository, RepositoryError } from "../db";
 import { makeUrl } from "../utils";
 
 export const restHandlers = [
-  rest.post(makeUrl("login"), async (req, res, ctx) => {
+  rest.get(makeUrl("users"), async (req, res, ctx) => {
     try {
-      const payload = await req.json();
-
-      const response = await BackendRepository.login(payload);
-
+      const response = await BackendRepository.userList();
       return res(ctx.status(200), ctx.json(response));
     } catch (err) {
       const error = RepositoryError.toJson(err);
@@ -16,13 +13,10 @@ export const restHandlers = [
     }
   }),
 
-  rest.post(makeUrl("refresh"), async (req, res, ctx) => {
+  rest.get(makeUrl("users/:id"), async (req, res, ctx) => {
     try {
-      const payload = await req.json();
-      const encodedToken = req.headers.get("Authorization");
-
-      const response = await BackendRepository.refresh(payload, encodedToken);
-
+      const { id } = req.params;
+      const response = await BackendRepository.user(+id);
       return res(ctx.status(200), ctx.json(response));
     } catch (err) {
       const error = RepositoryError.toJson(err);
@@ -32,12 +26,19 @@ export const restHandlers = [
 ];
 
 export const gqlHandlers = [
-  graphql.mutation("Login", async (req, res, ctx) => {
+  graphql.query("GetUsers", async (req, res, ctx) => {
     try {
-      const payload = req.variables;
+      const response = await BackendRepository.userList();
+      return res(ctx.data(response));
+    } catch (err) {
+      return res(ctx.errors([RepositoryError.toJson(err)]));
+    }
+  }),
 
-      const response = await BackendRepository.login(payload);
-
+  graphql.query("GetUser", async (req, res, ctx) => {
+    try {
+      const { id } = req.variables;
+      const response = await BackendRepository.user(+id);
       return res(ctx.data(response));
     } catch (err) {
       return res(ctx.errors([RepositoryError.toJson(err)]));

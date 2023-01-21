@@ -1,4 +1,5 @@
 import { ResponseComposition, rest, RestContext, RestRequest } from "msw";
+import { RepositoryError, Unauthorized } from "@backend/db";
 import { isAuthenticated, isPublicApi, makeUrl } from "@backend/utils";
 
 async function authMiddleware(
@@ -7,7 +8,8 @@ async function authMiddleware(
   ctx: RestContext
 ) {
   if (!isPublicApi(req.url.pathname) && !(await isAuthenticated(req.headers))) {
-    return res(ctx.status(401), ctx.json({ message: "Unauthorized" }));
+    const error = RepositoryError.toJson(new Unauthorized());
+    return res(ctx.status(error.code), ctx.json(error));
   }
   return undefined;
 }

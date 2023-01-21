@@ -12,7 +12,7 @@ export default defineConfig({
     tsconfigPaths(),
     { ...eslint({ failOnWarning: true }), apply: "build" },
     {
-      ...eslint({ fix: true, failOnError: false, failOnWarning: false }),
+      ...eslint({ fix: false, failOnError: false, failOnWarning: false }),
       apply: "serve",
       enforce: "post",
     },
