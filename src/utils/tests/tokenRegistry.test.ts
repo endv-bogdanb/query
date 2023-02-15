@@ -1,5 +1,5 @@
+import { afterEach, describe, expect, it } from "vitest";
 import { TokenRegistry } from "@utils/TokenRegistry";
-import { afterEach, describe, expect, it, vi } from "vitest";
 
 describe("TokenRegistry", () => {
   afterEach(() => {
