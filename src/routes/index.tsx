@@ -7,12 +7,13 @@ import {
   swrRoutes,
   toolkitRoutes,
 } from "@features";
+import { urqlRoutes } from "@features/urql";
 
 export const routes: RouteObject[] = [
   {
     path: "/",
     element: <Root />,
     errorElement: <ErrorPage />,
-    children: [queryRoutes, swrRoutes, toolkitRoutes, gqlRoutes],
+    children: [queryRoutes, swrRoutes, toolkitRoutes, gqlRoutes, urqlRoutes],
   },
 ];

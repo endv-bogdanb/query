@@ -1,3 +1,7 @@
+import { z } from "zod";
+
+const httpErrorSchema = z.object({ data: z.object({ message: z.string() }) });
+
 export class HttpError extends Error {
   public name = "HTTP_ERROR";
 
@@ -20,17 +24,19 @@ export class HttpError extends Error {
   static getErrorMessage = (error: unknown) => {
     if (this.isHttpError(error)) {
       return error.message;
-    } else if (
-      error !== null &&
-      typeof error === "object" &&
-      "data" in error &&
-      error.data !== null &&
-      typeof error.data === "object" &&
-      "message" in error.data &&
-      typeof error.data.message === "string"
-    ) {
-      return error.data.message;
     }
-    return "Unknown";
+    const parsedError = httpErrorSchema.safeParse(error);
+
+    if (!parsedError.success) {
+      return "Unknown";
+    }
+
+    const {
+      data: {
+        data: { message },
+      },
+    } = parsedError;
+
+    return message;
   };
 }

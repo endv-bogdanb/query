@@ -1,28 +1,28 @@
 import { RouteObject } from "react-router";
 import { ProtectedRoute } from "@features/ProtectedRoute";
-import { GqlRoot } from "./Gql";
-import { GqlLogin } from "./GqlLogin";
-import { GqlUserProfile } from "./GqlUserProfile";
-import { GqlUsers } from "./GqlUsers";
+import { UrqlRoot } from "./Urql";
+import { UrqlLogin } from "./UrqlLogin";
+import { UrqlUserProfile } from "./UrqlUserProfile";
+import { UrqlUsers } from "./UrqlUsers";
 
-export const gqlRoutes: RouteObject = {
-  path: "gql",
-  element: <GqlRoot />,
+export const urqlRoutes: RouteObject = {
+  path: "urql",
+  element: <UrqlRoot />,
   children: [
     {
       index: true,
-      element: <GqlLogin />,
+      element: <UrqlLogin />,
     },
     {
       element: <ProtectedRoute />,
       children: [
         {
           path: "users",
-          element: <GqlUsers />,
+          element: <UrqlUsers />,
           children: [
             {
               path: ":id",
-              element: <GqlUserProfile />,
+              element: <UrqlUserProfile />,
             },
           ],
         },
