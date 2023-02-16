@@ -4,7 +4,7 @@ import { UsersTable } from "@components";
 
 const GetUsersQuery = `
       query GetUsers {
-        profiles {
+        profile {
           __typename
           id
         }

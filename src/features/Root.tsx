@@ -37,6 +37,7 @@ export function Root() {
           <Link to="/toolkit-query"> toolkit query </Link>
           <Link to="/gql"> Gql </Link>
           <Link to="/urql"> Urql </Link>
+          <Link to="/apollo"> Apollo </Link>
           {!!session && !!session.token && !!session.refreshToken && (
             <Link
               to=""
