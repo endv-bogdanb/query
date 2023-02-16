@@ -10,7 +10,7 @@ async function getUsers(signal: AbortSignal) {
     body: JSON.stringify({
       query: `
       query GetUsers {
-        profiles {
+        profile {
           __typename
           id
         }
