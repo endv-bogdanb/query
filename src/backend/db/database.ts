@@ -20,7 +20,7 @@ export const db = factory({
     id: primaryKey(makeAutoIncrement()),
     firstName: faker.name.firstName,
     lastName: faker.name.lastName,
-    logo: faker.image.business,
+    logo: () => faker.image.placeholder.imageUrl(640, 480, "Logo image"),
   },
 });
 
