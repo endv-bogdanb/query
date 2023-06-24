@@ -41,12 +41,20 @@
       "warn",
       {
         "groups": [
-          ["^react", "^[a-z]", "@reduxjs", "@mantine", "^[^.]", "^\\."]
+          [
+            "^react",
+            "^[a-z]",
+            "@reduxjs",
+            "@tanstack",
+            "@mantine",
+            "^[^.]",
+            "^\\."
+          ]
         ]
       }
     ],
     "simple-import-sort/exports": "warn",
-    "react-hooks/rules-of-hooks": "error", 
+    "react-hooks/rules-of-hooks": "error",
     "react-hooks/exhaustive-deps": "warn"
   }
 }

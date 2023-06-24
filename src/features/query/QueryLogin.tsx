@@ -1,5 +1,5 @@
-import { useMutation } from "react-query";
 import { useNavigate } from "react-router-dom";
+import { useMutation } from "@tanstack/react-query";
 import { Login } from "@components";
 import { loginResSchema, TLoginReq } from "@models";
 import { httpClient, TokenRegistry } from "@utils";
@@ -7,13 +7,16 @@ import { httpClient, TokenRegistry } from "@utils";
 export function QueryLogin() {
   const navigate = useNavigate();
 
-  const login = useMutation(["login"], async (user: TLoginReq) => {
-    const data = await httpClient("/api/login", {
-      method: "POST",
-      body: JSON.stringify(user),
-    });
+  const login = useMutation({
+    mutationKey: ["login"],
+    mutationFn: async (user: TLoginReq) => {
+      const data = await httpClient("/api/login", {
+        method: "POST",
+        body: JSON.stringify(user),
+      });
 
-    return loginResSchema.parse(data);
+      return loginResSchema.parse(data);
+    },
   });
 
   return (
