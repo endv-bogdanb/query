@@ -8,7 +8,7 @@ export class HttpError extends Error {
   constructor(
     public message: string,
     public code: number,
-    public status: string
+    public status: string,
   ) {
     super(message);
   }

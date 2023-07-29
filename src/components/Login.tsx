@@ -28,7 +28,7 @@ export function Login({ title, onLogin, loading, error }: ILogin) {
             e.preventDefault();
             const data = new FormData(e.target as HTMLFormElement);
             const values = loginReqSchema.safeParse(
-              Object.fromEntries(data.entries())
+              Object.fromEntries(data.entries()),
             );
 
             if (values.success) {

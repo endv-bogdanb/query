@@ -7,7 +7,7 @@ export function ToolkitUserProfile() {
 
   const { data, isLoading, error, refetch } = useUserByIdQuery(
     { id: id! },
-    { skip: !id }
+    { skip: !id },
   );
 
   return (

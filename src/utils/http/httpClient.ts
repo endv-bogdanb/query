@@ -24,7 +24,7 @@ function makeTimeoutPromise() {
 
 export async function httpClient(
   url: string,
-  init?: RequestInit
+  init?: RequestInit,
 ): Promise<unknown> {
   const contentTypeHeader = { ["content-type"]: "application/json" } as const;
 
@@ -51,7 +51,7 @@ export async function httpClient(
 
 async function retryHttpClient(
   url: string,
-  init: RequestInit
+  init: RequestInit,
 ): Promise<unknown> {
   try {
     // Waits for mutex to be available without locking
@@ -110,7 +110,7 @@ async function retryHttpClient(
 
 export async function authHttpClient(
   url: string,
-  init?: RequestInit
+  init?: RequestInit,
 ): Promise<unknown> {
   if (TokenRegistry.token.length === 0) {
     throw new HttpError("Unauthorized", 401, "Unauthorized");

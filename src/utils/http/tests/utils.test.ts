@@ -44,8 +44,8 @@ describe("http-utils", () => {
         new HttpError(
           "Could not parse the response",
           422,
-          "Unprocessable Entity"
-        )
+          "Unprocessable Entity",
+        ),
       );
     });
 
@@ -61,8 +61,8 @@ describe("http-utils", () => {
         new HttpError(
           "Could not parse the response",
           422,
-          "Unprocessable Entity"
-        )
+          "Unprocessable Entity",
+        ),
       );
     });
   });
@@ -81,7 +81,7 @@ describe("http-utils", () => {
     it("should return json stringify", () => {
       const response = { txt: "Error message", json: { value: "text" } };
       expect(httpErrorMessage(response)).toBe(
-        JSON.stringify({ value: "text" })
+        JSON.stringify({ value: "text" }),
       );
     });
   });
@@ -94,7 +94,7 @@ describe("http-utils", () => {
       vi.spyOn(window, "requestAnimationFrame").mockImplementation(
         (callback) => {
           return setTimeout(callback, 0, 150) as unknown as number;
-        }
+        },
       );
 
       vi.spyOn(performance, "now").mockImplementationOnce(() => 0);
@@ -117,7 +117,7 @@ describe("http-utils", () => {
       vi.spyOn(window, "requestAnimationFrame").mockImplementation(
         (callback) => {
           return setTimeout(callback, 0, 150) as unknown as number;
-        }
+        },
       );
 
       vi.spyOn(window, "cancelAnimationFrame").mockImplementation((value) => {

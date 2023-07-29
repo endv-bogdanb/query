@@ -1,7 +1,7 @@
 import { useNavigate } from "react-router-dom";
 import useSWRMutation from "swr/mutation";
 import { Login } from "@components";
-import { loginResSchema } from "@models";
+import { loginResSchema, TLoginReq } from "@models";
 import { httpClient, TokenRegistry } from "@utils";
 
 export function SwrLogin() {
@@ -9,14 +9,14 @@ export function SwrLogin() {
 
   const { trigger, error, isMutating } = useSWRMutation(
     "/api/login",
-    async (url, { arg: user }) => {
+    async (url, { arg: user }: { arg: TLoginReq }) => {
       const data = await httpClient(url, {
         method: "POST",
         body: JSON.stringify(user),
       });
 
       return loginResSchema.parse(data);
-    }
+    },
   );
 
   return (
