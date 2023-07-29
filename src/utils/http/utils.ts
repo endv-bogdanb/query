@@ -23,7 +23,7 @@ export async function parseResponse(response: Response) {
     throw new HttpError(
       "Could not parse the response",
       422,
-      "Unprocessable Entity"
+      "Unprocessable Entity",
     );
   }
 }

@@ -37,7 +37,7 @@ export const baseQuery: BaseQueryFn<
             body: { refreshToken: TokenRegistry.refreshToken },
           },
           api,
-          extraOptions
+          extraOptions,
         );
 
         const data = refreshResSchema.safeParse(refreshResult.data);

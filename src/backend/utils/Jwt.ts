@@ -12,7 +12,7 @@ const storedKeysSchema = z
       privatekey: z
         .string()
         .transform(async (value) => await jose.importPKCS8(value, "ES256")),
-    })
+    }),
   );
 
 export interface IRetrieve {

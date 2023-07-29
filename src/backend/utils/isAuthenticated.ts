@@ -8,7 +8,7 @@ export const bearerSchema = z
   .transform((value) => value.slice("Bearer ".length));
 
 export async function isAuthenticated(
-  headers: RestRequest["headers"]
+  headers: RestRequest["headers"],
 ): Promise<boolean> {
   try {
     const token = bearerSchema.parse(headers.get("Authorization"));

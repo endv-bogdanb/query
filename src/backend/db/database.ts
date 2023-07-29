@@ -18,9 +18,14 @@ export const db = factory({
   profile: {
     __typename: () => "Profile",
     id: primaryKey(makeAutoIncrement()),
-    firstName: faker.name.firstName,
-    lastName: faker.name.lastName,
-    logo: () => faker.image.placeholder.imageUrl(640, 480, "Logo image"),
+    firstName: faker.person.firstName,
+    lastName: faker.person.lastName,
+    logo: () =>
+      faker.image.urlPlaceholder({
+        height: 640,
+        width: 480,
+        text: "Logo image",
+      }),
   },
 });
 

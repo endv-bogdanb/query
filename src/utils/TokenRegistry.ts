@@ -24,7 +24,7 @@ export function useSession() {
       };
     },
     () => state,
-    () => undefined
+    () => undefined,
   );
 }
 

@@ -5,7 +5,7 @@ import { isAuthenticated, isPublicApi, makeUrl } from "@backend/utils";
 async function authMiddleware(
   req: RestRequest,
   res: ResponseComposition,
-  ctx: RestContext
+  ctx: RestContext,
 ) {
   if (!isPublicApi(req.url.pathname) && !(await isAuthenticated(req.headers))) {
     const error = RepositoryError.toJson(new Unauthorized());

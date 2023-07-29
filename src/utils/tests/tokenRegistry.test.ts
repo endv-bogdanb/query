@@ -11,7 +11,7 @@ describe("TokenRegistry", () => {
     sessionStorage.setItem("TOKEN", JSON.stringify("token-value"));
     sessionStorage.setItem(
       "REFRESH_TOKEN",
-      JSON.stringify("refresh-token-value")
+      JSON.stringify("refresh-token-value"),
     );
     TokenRegistry.setup();
 
@@ -35,7 +35,7 @@ describe("TokenRegistry", () => {
     TokenRegistry.refreshToken = "token";
 
     expect(sessionStorage.getItem("REFRESH_TOKEN")).toBe(
-      JSON.stringify("token")
+      JSON.stringify("token"),
     );
   });
 

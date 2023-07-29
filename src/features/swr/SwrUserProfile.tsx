@@ -9,7 +9,7 @@ export function SwrUserProfile() {
 
   const { data, error, isLoading, mutate } = useSWR(
     ["user_profile", { id }],
-    async () => userSchema.parse(await authHttpClient(`/api/users/${id}`))
+    async () => userSchema.parse(await authHttpClient(`/api/users/${id}`)),
   );
 
   return (

@@ -13,7 +13,7 @@ function start() {
       <MantineProvider withGlobalStyles withNormalizeCSS>
         <RouterProvider router={router} />
       </MantineProvider>
-    </React.StrictMode>
+    </React.StrictMode>,
   );
 }
 
