@@ -1,7 +1,7 @@
 import { useNavigate } from "react-router-dom";
 import { useMutation } from "urql";
 import { Login } from "@components";
-import { TokenRegistry } from "@utils";
+import { tokenSlice } from "@utils";
 
 const LoginMutation = `
       mutation Login($username: String!, $password: String!){
@@ -25,9 +25,15 @@ export function UrqlLogin() {
 
           if (error) throw error;
 
-          TokenRegistry.token = data.token;
-          TokenRegistry.refreshToken = data.refreshToken;
-          TokenRegistry.user = data.user;
+          tokenSlice.dispatch({
+            type: "set",
+            payload: {
+              token: data.token,
+              refreshToken: data.refreshToken,
+              user: data.user,
+            },
+          });
+
           navigate("users");
         } catch (e) {
           console.log("err", e);

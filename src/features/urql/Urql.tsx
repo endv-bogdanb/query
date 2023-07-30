@@ -1,6 +1,6 @@
 import { Outlet } from "react-router-dom";
 import { cacheExchange, createClient, fetchExchange, Provider } from "urql";
-import { TokenRegistry } from "@utils";
+import { tokenSlice } from "@utils";
 
 const client = createClient({
   url: "gql/",
@@ -9,8 +9,8 @@ const client = createClient({
     return {
       headers: {
         accept: "*/*", // NOTE: https://github.com/mswjs/msw/issues/1593#issuecomment-1509003528
-        authorization: TokenRegistry.token
-          ? `Bearer ${TokenRegistry.token}`
+        authorization: tokenSlice.state.token
+          ? `Bearer ${tokenSlice.state.token}`
           : "",
       },
     };

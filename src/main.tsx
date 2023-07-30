@@ -3,7 +3,7 @@ import ReactDOM from "react-dom/client";
 import { createHashRouter, RouterProvider } from "react-router-dom";
 import { MantineProvider } from "@mantine/core";
 import { routes } from "@routes";
-import { getPublicUrl, TokenRegistry } from "@utils";
+import { getPublicUrl, tokenSlice } from "@utils";
 
 const router = createHashRouter(routes);
 
@@ -29,7 +29,7 @@ import("./backend/browser")
     return Promise.resolve();
   })
   .then(() => {
-    TokenRegistry.setup();
+    tokenSlice.dispatch({ type: "setup" });
     return Promise.resolve();
   })
   .then(() => start());

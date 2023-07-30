@@ -1,7 +1,7 @@
 import { useNavigate } from "react-router-dom";
 import { Login } from "@components";
 import { loginResSchema, TLoginReq, TLoginRes } from "@models";
-import { httpClient, TokenRegistry } from "@utils";
+import { httpClient, tokenSlice } from "@utils";
 
 async function login(variables: TLoginReq): Promise<TLoginRes> {
   const { data } = (await httpClient("gql/", {
@@ -29,9 +29,16 @@ export function GqlLogin() {
       onLogin={async (value) => {
         try {
           const data = await login(value);
-          TokenRegistry.token = data.token;
-          TokenRegistry.refreshToken = data.refreshToken;
-          TokenRegistry.user = data.user;
+
+          tokenSlice.dispatch({
+            type: "set",
+            payload: {
+              token: data.token,
+              refreshToken: data.refreshToken,
+              user: data.user,
+            },
+          });
+
           navigate("users");
         } catch (e) {
           console.log("err", e);
