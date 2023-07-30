@@ -1,4 +1,5 @@
-import { useSyncExternalStore } from "react";
+import { dequal } from "dequal/lite";
+import { useSyncExternalStoreWithSelector as useSyncExternalStore } from "use-sync-external-store/shim/with-selector";
 
 type HandleSubscribe = Parameters<typeof useSyncExternalStore>[0];
 
@@ -14,17 +15,14 @@ export interface Selector<TState, TReturn> {
   (state: TState): TReturn;
 }
 
+const defaultSelector: Selector<any, any> = (state) => state;
+
 export const makeGlobalSlice = <TState, TAction extends AnyAction>(
   reducer: Reducer<TState, TAction>,
 ) => {
   const subscribers: Set<() => void> = new Set();
 
-  let state: TState = reducer(
-    undefined as unknown as TState,
-    {
-      type: "@@INIT",
-    } as unknown as TAction,
-  );
+  let state: TState = reducer(undefined, { type: "@@INIT" } as TAction);
 
   const dispatch = (action: TAction) => {
     state = reducer(state, action);
@@ -39,9 +37,15 @@ export const makeGlobalSlice = <TState, TAction extends AnyAction>(
   };
 
   const useSlice = <TReturn = TState>(
-    selector: Selector<TState, TReturn> = (_state) =>
-      _state as unknown as TReturn,
-  ) => useSyncExternalStore(handleSubscribe, () => selector(state));
+    selector: Selector<TState, TReturn> = defaultSelector,
+  ) =>
+    useSyncExternalStore(
+      handleSubscribe,
+      () => state,
+      undefined,
+      selector,
+      dequal,
+    );
 
   return {
     dispatch,
