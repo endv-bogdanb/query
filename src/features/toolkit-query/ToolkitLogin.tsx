@@ -1,7 +1,7 @@
 import { useNavigate } from "react-router-dom";
 import { FetchBaseQueryError } from "@reduxjs/toolkit/dist/query";
 import { Login } from "@components";
-import { TokenRegistry } from "@utils";
+import { tokenSlice } from "@utils";
 import { useLoginMutation } from "./store/api/api";
 
 export function ToolkitLogin() {
@@ -16,9 +16,14 @@ export function ToolkitLogin() {
         try {
           const { token, refreshToken, user } = await login(value).unwrap();
 
-          TokenRegistry.token = token;
-          TokenRegistry.refreshToken = refreshToken;
-          TokenRegistry.user = user;
+          tokenSlice.dispatch({
+            type: "set",
+            payload: {
+              token,
+              refreshToken,
+              user,
+            },
+          });
 
           navigate("users");
         } catch (e) {

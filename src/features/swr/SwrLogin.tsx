@@ -2,7 +2,7 @@ import { useNavigate } from "react-router-dom";
 import useSWRMutation from "swr/mutation";
 import { Login } from "@components";
 import { loginResSchema, TLoginReq } from "@models";
-import { httpClient, TokenRegistry } from "@utils";
+import { httpClient, tokenSlice } from "@utils";
 
 export function SwrLogin() {
   const navigate = useNavigate();
@@ -30,9 +30,14 @@ export function SwrLogin() {
             throw data;
           }
 
-          TokenRegistry.token = data.token;
-          TokenRegistry.refreshToken = data.refreshToken;
-          TokenRegistry.user = data.user;
+          tokenSlice.dispatch({
+            type: "set",
+            payload: {
+              token: data.token,
+              refreshToken: data.refreshToken,
+              user: data.user,
+            },
+          });
 
           navigate("users");
         } catch (e) {

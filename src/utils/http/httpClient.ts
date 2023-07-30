@@ -1,6 +1,6 @@
 import { Mutex } from "async-mutex";
 import { refreshResSchema } from "@models";
-import { TokenRegistry } from "../TokenRegistry";
+import { tokenSlice } from "@utils/tokenSlice";
 import { HttpError } from "./HttpError";
 import { httpErrorMessage, parseResponse, setRafTimeout } from "./utils";
 
@@ -69,14 +69,14 @@ async function retryHttpClient(
       try {
         const response = await httpClient("/api/refresh", {
           method: "POST",
-          body: JSON.stringify({ refreshToken: TokenRegistry.refreshToken }),
-          headers: { Authorization: `Bearer ${TokenRegistry.token}` },
+          body: JSON.stringify({ refreshToken: tokenSlice.state.refreshToken }),
+          headers: { Authorization: `Bearer ${tokenSlice.state.token}` },
         });
 
         const data = refreshResSchema.safeParse(response);
 
         if (!data.success) {
-          TokenRegistry.reset();
+          tokenSlice.dispatch({ type: "reset" });
           throw new HttpError("Unauthorized", 401, "Unauthorized");
         }
 
@@ -84,10 +84,15 @@ async function retryHttpClient(
           data: { token, refreshToken },
         } = data;
 
-        TokenRegistry.token = token;
-        TokenRegistry.refreshToken = refreshToken;
+        tokenSlice.dispatch({
+          type: "set",
+          payload: {
+            token,
+            refreshToken,
+          },
+        });
       } catch (e) {
-        TokenRegistry.reset();
+        tokenSlice.dispatch({ type: "reset" });
         throw e;
       } finally {
         // Unlocks the mutex
@@ -102,7 +107,7 @@ async function retryHttpClient(
       ...init,
       headers: {
         ...init.headers,
-        Authorization: `Bearer ${TokenRegistry.token}`,
+        Authorization: `Bearer ${tokenSlice.state.token}`,
       },
     });
   }
@@ -112,12 +117,12 @@ export async function authHttpClient(
   url: string,
   init?: RequestInit,
 ): Promise<unknown> {
-  if (TokenRegistry.token.length === 0) {
+  if (tokenSlice.state.token.length === 0) {
     throw new HttpError("Unauthorized", 401, "Unauthorized");
   }
 
   const headers = {
-    Authorization: `Bearer ${TokenRegistry.token}`,
+    Authorization: `Bearer ${tokenSlice.state.token}`,
     ...(init?.headers ?? {}),
   };
 

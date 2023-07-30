@@ -6,14 +6,14 @@ import {
   FetchBaseQueryError,
 } from "@reduxjs/toolkit/dist/query";
 import { refreshResSchema } from "@models";
-import { TokenRegistry } from "@utils";
+import { tokenSlice } from "@utils";
 
 const mutex = new Mutex();
 
 const authorisedQuery = fetchBaseQuery({
   baseUrl: "/api",
   prepareHeaders: (headers) => {
-    headers.append("Authorization", `Bearer ${TokenRegistry.token}`);
+    headers.append("Authorization", `Bearer ${tokenSlice.state.token}`);
     return headers;
   },
 });
@@ -34,7 +34,7 @@ export const baseQuery: BaseQueryFn<
           {
             url: "/refresh",
             method: "POST",
-            body: { refreshToken: TokenRegistry.refreshToken },
+            body: { refreshToken: tokenSlice.state.refreshToken },
           },
           api,
           extraOptions,
@@ -47,10 +47,12 @@ export const baseQuery: BaseQueryFn<
             data: { token, refreshToken },
           } = data;
 
-          TokenRegistry.token = token;
-          TokenRegistry.refreshToken = refreshToken;
+          tokenSlice.dispatch({
+            type: "set",
+            payload: { token, refreshToken },
+          });
         } else {
-          TokenRegistry.reset();
+          tokenSlice.dispatch({ type: "reset" });
         }
       } finally {
         release();

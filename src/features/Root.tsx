@@ -2,12 +2,12 @@ import { useEffect, useState } from "react";
 import { Link, Outlet } from "react-router-dom";
 import { Divider, Space } from "@mantine/core";
 import { Layout } from "@components/Layout";
-import { getPublicUrl, httpClient, TokenRegistry, useSession } from "@utils";
+import { getPublicUrl, httpClient, tokenSlice } from "@utils";
 
 export function Root() {
   const [version, setVersion] = useState<string | null>(null);
 
-  const session = useSession();
+  const session = tokenSlice.useSlice();
 
   useEffect(() => {
     const ab = new AbortController();
@@ -43,7 +43,7 @@ export function Root() {
               to=""
               onClick={(e) => {
                 e.preventDefault();
-                TokenRegistry.reset();
+                tokenSlice.dispatch({ type: "reset" });
               }}
             >
               logout
