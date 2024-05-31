@@ -1,10 +1,7 @@
 import { Link, useRouteError } from "react-router-dom";
-import { Text } from "@mantine/core";
-import { createStyles } from "@mantine/emotion";
-import { Layout } from "./Layout";
+import { Layout } from "../Layout/Layout";
 
 export function ErrorPage() {
-  const { classes } = useStyles();
   const error = useRouteError() as any;
 
   console.error(error);
@@ -17,16 +14,8 @@ export function ErrorPage() {
         <p>
           <i>{error.statusText || error.message}</i>
         </p>
-        <Link className={classes.link} to="/">
-          <Text c="red.9">Reload</Text>
-        </Link>
+        <Link to="/">Reload</Link>
       </div>
     </Layout>
   );
 }
-
-const useStyles = createStyles((theme) => ({
-  link: {
-    textDecorationColor: theme.colors.red[9],
-  },
-}));
