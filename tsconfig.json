@@ -29,7 +29,8 @@
       "@routes/*": ["src/routes/*"],
       "@backend": ["src/backend"],
       "@backend/*": ["src/backend/*"]
-    }
+    },
+    "plugins": [{ "name": "typescript-plugin-css-modules" }]
   },
   "include": ["src"],
   "references": [{ "path": "./tsconfig.node.json" }]

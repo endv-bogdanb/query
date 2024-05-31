@@ -1,6 +1,6 @@
 import { Outlet } from "react-router-dom";
 import useSWR from "swr";
-import { UsersTable } from "@components/UsersTable";
+import { UsersTable } from "@components/UsersTable/UsersTable";
 import { usersSchema } from "@models";
 import { authHttpClient } from "@utils";
 

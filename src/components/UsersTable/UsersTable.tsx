@@ -1,12 +1,4 @@
 import { Link } from "react-router-dom";
-import {
-  Button,
-  Center,
-  LoadingOverlay,
-  Space,
-  Table,
-  Text,
-} from "@mantine/core";
 import { TUsers } from "@models";
 import { HttpError } from "@utils";
 
@@ -20,8 +12,8 @@ export interface IUserTable {
 export function UsersTable({ users, loading, error, retry }: IUserTable) {
   return (
     <>
-      <LoadingOverlay visible={loading} />
-      <Table>
+      {loading && <progress />}
+      <table>
         <thead>
           <tr>
             <th>ID</th>
@@ -42,15 +34,12 @@ export function UsersTable({ users, loading, error, retry }: IUserTable) {
             </tr>
           ))}
         </tbody>
-      </Table>
+      </table>
       {error ? (
-        <Center>
-          <Text c="red.9">{HttpError.getErrorMessage(error)}</Text>
-          <Space w="xs" />
-          <Button color="red" variant="subtle" onClick={retry}>
-            Retry
-          </Button>
-        </Center>
+        <div>
+          <div>{HttpError.getErrorMessage(error)}</div>
+          <button onClick={retry}>Retry</button>
+        </div>
       ) : null}
     </>
   );

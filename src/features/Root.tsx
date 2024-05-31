@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react";
 import { Link, Outlet } from "react-router-dom";
-import { Divider, Space } from "@mantine/core";
-import { Layout } from "@components/Layout";
+import { Layout } from "@components/Layout/Layout";
 import { getPublicUrl, httpClient, tokenSlice } from "@utils";
 
 export function Root() {
@@ -29,7 +28,13 @@ export function Root() {
 
   return (
     <Layout>
-      <div style={{ display: "flex", justifyContent: "space-between" }}>
+      <div
+        style={{
+          display: "flex",
+          justifyContent: "space-between",
+          marginBottom: 64,
+        }}
+      >
         <div>{version !== null ? <>version: {version}</> : null}</div>
         <nav style={{ display: "flex", gap: 16 }}>
           <Link to="/query">query</Link>
@@ -51,8 +56,6 @@ export function Root() {
           )}
         </nav>
       </div>
-      <Divider />
-      <Space h="xl" />
       <Outlet />
     </Layout>
   );

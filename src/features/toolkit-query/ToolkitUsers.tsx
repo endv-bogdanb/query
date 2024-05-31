@@ -1,5 +1,5 @@
 import { Outlet } from "react-router-dom";
-import { UsersTable } from "@components/UsersTable";
+import { UsersTable } from "@components/UsersTable/UsersTable";
 import { useUsersQuery } from "./store/api/api";
 
 export function ToolkitUsers() {
