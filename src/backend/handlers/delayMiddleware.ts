@@ -2,7 +2,6 @@ import { delay, http } from "msw";
 import { makeUrl } from "@backend/utils";
 
 async function delayMiddleware() {
-  console.log("i'm in delay middleware");
   const ms = import.meta.env.DEV ? undefined : 1000;
   await delay(ms);
 }
