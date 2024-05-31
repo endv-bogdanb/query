@@ -40,7 +40,7 @@ export function QueryLogin() {
           console.log("err", e);
         }
       }}
-      loading={login.isLoading}
+      loading={login.isPending}
       error={login.error as { message: string }}
     />
   );

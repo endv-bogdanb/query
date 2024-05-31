@@ -1,47 +1,47 @@
-import { graphql, rest } from "msw";
+import { graphql, http, HttpResponse } from "msw";
 import { BackendRepository, RepositoryError } from "../db";
 import { makeUrl } from "../utils";
 
-export const restHandlers = [
-  rest.get(makeUrl("users"), async (req, res, ctx) => {
+export const httpHandlers = [
+  http.get(makeUrl("users"), async () => {
     try {
       const response = await BackendRepository.userList();
-      return res(ctx.status(200), ctx.json(response));
+      return HttpResponse.json(response, { status: 200 });
     } catch (err) {
       const error = RepositoryError.toJson(err);
-      return res(ctx.status(error.code), ctx.json(error));
+      return HttpResponse.json(error, { status: error.code });
     }
   }),
 
-  rest.get(makeUrl("users/:id"), async (req, res, ctx) => {
+  http.get(makeUrl("users/:id"), async ({ params }) => {
     try {
-      const { id } = req.params;
+      const { id } = params;
       const response = await BackendRepository.user(+id);
-      return res(ctx.status(200), ctx.json(response));
+      return HttpResponse.json(response, { status: 200 });
     } catch (err) {
       const error = RepositoryError.toJson(err);
-      return res(ctx.status(error.code), ctx.json(error));
+      return HttpResponse.json(error, { status: error.code });
     }
   }),
 ];
 
 export const gqlHandlers = [
-  graphql.query("GetUsers", async (req, res, ctx) => {
+  graphql.query("GetUsers", async () => {
     try {
       const response = await BackendRepository.userList();
-      return res(ctx.data(response));
+      return HttpResponse.json({ data: response });
     } catch (err) {
-      return res(ctx.errors([RepositoryError.toJson(err)]));
+      return HttpResponse.json({ errors: [RepositoryError.toJson(err)] });
     }
   }),
 
-  graphql.query("GetUser", async (req, res, ctx) => {
+  graphql.query("GetUser", async ({ variables }) => {
     try {
-      const { id } = req.variables;
+      const { id } = variables;
       const response = await BackendRepository.user(+id);
-      return res(ctx.data(response));
+      return HttpResponse.json({ data: response });
     } catch (err) {
-      return res(ctx.errors([RepositoryError.toJson(err)]));
+      return HttpResponse.json({ errors: [RepositoryError.toJson(err)] });
     }
   }),
 ];

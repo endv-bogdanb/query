@@ -1,5 +1,5 @@
 import { useNavigate } from "react-router-dom";
-import { FetchBaseQueryError } from "@reduxjs/toolkit/dist/query";
+import { FetchBaseQueryError } from "@reduxjs/toolkit/query";
 import { Login } from "@components";
 import { tokenSlice } from "@utils";
 import { useLoginMutation } from "./store/api/api";

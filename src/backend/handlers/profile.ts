@@ -1,47 +1,47 @@
-import { graphql, rest } from "msw";
+import { graphql, http, HttpResponse } from "msw";
 import { BackendRepository, RepositoryError } from "../db";
 import { makeUrl } from "../utils";
 
-export const restHandlers = [
-  rest.get(makeUrl("profiles"), async (req, res, ctx) => {
+export const httpHandlers = [
+  http.get(makeUrl("profiles"), async () => {
     try {
       const response = await BackendRepository.profileList();
-      return res(ctx.status(200), ctx.json(response));
+      return HttpResponse.json(response, { status: 200 });
     } catch (err) {
       const error = RepositoryError.toJson(err);
-      return res(ctx.status(error.code), ctx.json(error));
+      return HttpResponse.json(error, { status: error.code });
     }
   }),
 
-  rest.get(makeUrl("profiles/:id"), async (req, res, ctx) => {
+  http.get(makeUrl("profiles/:id"), async ({ params }) => {
     try {
-      const { id } = req.params;
+      const { id } = params;
       const response = await BackendRepository.profile(+id);
-      return res(ctx.status(200), ctx.json(response));
+      return HttpResponse.json(response, { status: 200 });
     } catch (err) {
       const error = RepositoryError.toJson(err);
-      return res(ctx.status(error.code), ctx.json(error));
+      return HttpResponse.json(error, { status: error.code });
     }
   }),
 ];
 
 export const gqlHandlers = [
-  graphql.query("GetProfiles", async (req, res, ctx) => {
+  graphql.query("GetProfiles", async () => {
     try {
       const response = await BackendRepository.profileList();
-      return res(ctx.data(response));
+      return HttpResponse.json({ data: response });
     } catch (err) {
-      return res(ctx.errors([RepositoryError.toJson(err)]));
+      return HttpResponse.json({ errors: [RepositoryError.toJson(err)] });
     }
   }),
 
-  graphql.query("GetProfile", async (req, res, ctx) => {
+  graphql.query("GetProfile", async ({ variables }) => {
     try {
-      const { id } = req.variables;
+      const { id } = variables;
       const response = await BackendRepository.profile(+id);
-      return res(ctx.data(response));
+      return HttpResponse.json({ data: response });
     } catch (err) {
-      return res(ctx.errors([RepositoryError.toJson(err)]));
+      return HttpResponse.json({ errors: [RepositoryError.toJson(err)] });
     }
   }),
 ];

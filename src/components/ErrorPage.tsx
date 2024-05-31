@@ -1,5 +1,6 @@
 import { Link, useRouteError } from "react-router-dom";
-import { createStyles, Text } from "@mantine/core";
+import { Text } from "@mantine/core";
+import { createStyles } from "@mantine/emotion";
 import { Layout } from "./Layout";
 
 export function ErrorPage() {

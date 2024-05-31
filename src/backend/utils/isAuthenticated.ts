@@ -1,4 +1,4 @@
-import { RestRequest } from "msw";
+import { StrictRequest } from "msw";
 import { z } from "zod";
 import { JWT } from "./Jwt";
 
@@ -8,7 +8,7 @@ export const bearerSchema = z
   .transform((value) => value.slice("Bearer ".length));
 
 export async function isAuthenticated(
-  headers: RestRequest["headers"],
+  headers: StrictRequest<undefined>["headers"],
 ): Promise<boolean> {
   try {
     const token = bearerSchema.parse(headers.get("Authorization"));

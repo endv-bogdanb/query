@@ -18,11 +18,11 @@ credentials:
 Installation
 
 ```bash
-yarn
+npm i
 ```
 
 Start
 
 ```bash
-yarn dev
+npm run dev
 ```

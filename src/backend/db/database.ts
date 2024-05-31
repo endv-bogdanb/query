@@ -21,10 +21,10 @@ export const db = factory({
     firstName: faker.person.firstName,
     lastName: faker.person.lastName,
     logo: () =>
-      faker.image.urlPlaceholder({
+      faker.image.urlLoremFlickr({
+        category: "nature",
         height: 640,
         width: 480,
-        text: "Logo image",
       }),
   },
 });

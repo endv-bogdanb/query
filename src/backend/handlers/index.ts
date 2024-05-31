@@ -1,25 +1,25 @@
-import { GraphQLHandler, RestHandler } from "msw";
+import { GraphQLHandler, HttpHandler } from "msw";
 import {
   gqlHandlers as authGqlHandlers,
-  restHandlers as authRestHandlers,
+  httpHandlers as authHttpHandlers,
 } from "./auth";
 import authMiddleware from "./authMiddleware";
 import delayMiddleware from "./delayMiddleware";
 import {
   gqlHandlers as profileGqlHandlers,
-  restHandlers as profileRestHandlers,
+  httpHandlers as profileHttpHandlers,
 } from "./profile";
 import {
   gqlHandlers as userGqlHandlers,
-  restHandlers as userRestHandlers,
+  httpHandlers as userHttpHandlers,
 } from "./user";
 
-export const restHandlers = ([] as RestHandler[])
+export const restHandlers = ([] as HttpHandler[])
   .concat(delayMiddleware)
   .concat(authMiddleware)
-  .concat(authRestHandlers)
-  .concat(userRestHandlers)
-  .concat(profileRestHandlers);
+  .concat(authHttpHandlers)
+  .concat(userHttpHandlers)
+  .concat(profileHttpHandlers);
 
 export const gqlHandlers = ([] as GraphQLHandler[])
   .concat(authGqlHandlers)

@@ -1,18 +1,18 @@
-import { rest } from "msw";
-import { makeUrl, sleep } from "@backend/utils";
+import { delay, http } from "msw";
+import { makeUrl } from "@backend/utils";
 
 async function delayMiddleware() {
-  const delay = import.meta.env.DEV ? 500 : 1000;
-  await sleep(delay);
-  return undefined;
+  console.log("i'm in delay middleware");
+  const ms = import.meta.env.DEV ? undefined : 1000;
+  await delay(ms);
 }
 
 const handlers = [
-  rest.get(makeUrl("*"), delayMiddleware),
-  rest.post(makeUrl("*"), delayMiddleware),
-  rest.put(makeUrl("*"), delayMiddleware),
-  rest.patch(makeUrl("*"), delayMiddleware),
-  rest.delete(makeUrl("*"), delayMiddleware),
+  http.get(makeUrl("*"), delayMiddleware),
+  http.post(makeUrl("*"), delayMiddleware),
+  http.put(makeUrl("*"), delayMiddleware),
+  http.patch(makeUrl("*"), delayMiddleware),
+  http.delete(makeUrl("*"), delayMiddleware),
 ];
 
 export default handlers;

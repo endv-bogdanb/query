@@ -4,7 +4,7 @@ import {
   FetchArgs,
   fetchBaseQuery,
   FetchBaseQueryError,
-} from "@reduxjs/toolkit/dist/query";
+} from "@reduxjs/toolkit/query";
 import { refreshResSchema } from "@models";
 import { tokenSlice } from "@utils";
 

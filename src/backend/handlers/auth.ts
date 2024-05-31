@@ -1,46 +1,46 @@
-import { graphql, rest } from "msw";
+import { graphql, http, HttpResponse } from "msw";
 import { BackendRepository, RepositoryError } from "../db";
 import { makeUrl } from "../utils";
 
-export const restHandlers = [
-  rest.post(makeUrl("login"), async (req, res, ctx) => {
+export const httpHandlers = [
+  http.post(makeUrl("login"), async ({ request }) => {
     try {
-      const payload = await req.json();
+      const payload = await request.json();
 
       const response = await BackendRepository.login(payload);
 
-      return res(ctx.status(200), ctx.json(response));
+      return HttpResponse.json(response, { status: 200 });
     } catch (err) {
       const error = RepositoryError.toJson(err);
-      return res(ctx.status(error.code), ctx.json(error));
+      return HttpResponse.json(error, { status: error.code });
     }
   }),
 
-  rest.post(makeUrl("refresh"), async (req, res, ctx) => {
+  http.post(makeUrl("refresh"), async ({ request }) => {
     try {
-      const payload = await req.json();
-      const encodedToken = req.headers.get("Authorization");
+      const payload = await request.json();
+      const encodedToken = request.headers.get("Authorization");
 
       const response = await BackendRepository.refresh(payload, encodedToken);
 
-      return res(ctx.status(200), ctx.json(response));
+      return HttpResponse.json(response, { status: 200 });
     } catch (err) {
       const error = RepositoryError.toJson(err);
-      return res(ctx.status(error.code), ctx.json(error));
+      return HttpResponse.json(error, { status: error.code });
     }
   }),
 ];
 
 export const gqlHandlers = [
-  graphql.mutation("Login", async (req, res, ctx) => {
+  graphql.mutation("Login", async ({ variables }) => {
     try {
-      const payload = req.variables;
+      const payload = variables;
 
       const response = await BackendRepository.login(payload);
 
-      return res(ctx.data(response));
+      return HttpResponse.json({ data: response });
     } catch (err) {
-      return res(ctx.errors([RepositoryError.toJson(err)]));
+      return HttpResponse.json({ errors: [RepositoryError.toJson(err)] });
     }
   }),
 ];

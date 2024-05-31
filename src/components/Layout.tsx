@@ -1,5 +1,6 @@
 import { ReactNode } from "react";
-import { Container, createStyles } from "@mantine/core";
+import { Container } from "@mantine/core";
+import { createStyles } from "@mantine/emotion";
 
 export interface ILayout {
   children: ReactNode;

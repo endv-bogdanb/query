@@ -1,7 +1,9 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
 import { createHashRouter, RouterProvider } from "react-router-dom";
+import "@mantine/core/styles.css";
 import { MantineProvider } from "@mantine/core";
+import { emotionTransform, MantineEmotionProvider } from "@mantine/emotion";
 import { routes } from "@routes";
 import { getPublicUrl, tokenSlice } from "@utils";
 
@@ -10,8 +12,13 @@ const router = createHashRouter(routes);
 function start() {
   ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
     <React.StrictMode>
-      <MantineProvider withGlobalStyles withNormalizeCSS>
-        <RouterProvider router={router} />
+      <MantineProvider
+        defaultColorScheme="auto"
+        stylesTransform={emotionTransform}
+      >
+        <MantineEmotionProvider>
+          <RouterProvider router={router} />
+        </MantineEmotionProvider>
       </MantineProvider>
     </React.StrictMode>,
   );

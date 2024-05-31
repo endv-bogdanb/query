@@ -1,25 +1,21 @@
-import { ResponseComposition, rest, RestContext, RestRequest } from "msw";
+import { http, HttpResponse, type HttpResponseResolver } from "msw";
 import { RepositoryError, Unauthorized } from "@backend/db";
 import { isAuthenticated, isPublicApi, makeUrl } from "@backend/utils";
 
-async function authMiddleware(
-  req: RestRequest,
-  res: ResponseComposition,
-  ctx: RestContext,
-) {
-  if (!isPublicApi(req.url.pathname) && !(await isAuthenticated(req.headers))) {
+const authMiddleware: HttpResponseResolver = async ({ request }) => {
+  const pathname = new URL(request.url).pathname;
+  if (!isPublicApi(pathname) && !(await isAuthenticated(request.headers))) {
     const error = RepositoryError.toJson(new Unauthorized());
-    return res(ctx.status(error.code), ctx.json(error));
+    return HttpResponse.json(error, { status: error.code });
   }
-  return undefined;
-}
+};
 
 const handlers = [
-  rest.get(makeUrl("*"), authMiddleware),
-  rest.post(makeUrl("*"), authMiddleware),
-  rest.put(makeUrl("*"), authMiddleware),
-  rest.patch(makeUrl("*"), authMiddleware),
-  rest.delete(makeUrl("*"), authMiddleware),
+  http.get(makeUrl("*"), authMiddleware),
+  http.post(makeUrl("*"), authMiddleware),
+  http.put(makeUrl("*"), authMiddleware),
+  http.patch(makeUrl("*"), authMiddleware),
+  http.delete(makeUrl("*"), authMiddleware),
 ];
 
 export default handlers;
